@@ -1,15 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
-import { BehaviorSubject, throwError } from 'rxjs';
-import {  catchError } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpService } from '../core/http/http.service';
 import { ApiMethod, AuthEndPoints } from '../core/constants/api-constants';
-export class user {
-  userid: string;
-  password: string;
-}
 @Injectable({
   providedIn: 'root',
 })

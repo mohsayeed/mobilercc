@@ -1,1 +1,6 @@
 
+.scroll-y {
+    overflow-y: var(--overflow);
+    overscroll-behavior-y: contain;
+    color: red;
+}

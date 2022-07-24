@@ -3,41 +3,41 @@
   <ion-card>
     <ion-item>
       <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
-      <ion-label slot="end" class="title">Skin Less Chicken</ion-label>
+      <ion-label slot="end" class="title">Chicken with Skin</ion-label>
     </ion-item>
 
     <ion-card-content class="ion-text-center">
-      ₹ {{orders.liverate}}
+      ₹ {{orders.skinlessRate}}
     </ion-card-content>
   </ion-card>
 
   <ion-card>
     <ion-item>
+      <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
+      <ion-label slot="end" class="title">Skin Less Chicken</ion-label>
+    </ion-item>
+
+    <ion-card-content class="ion-text-center">
+      ₹ {{orders.withSkinRate}}
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-item class="ion-text-center">
       <ion-icon name="cash-outline" class="size"></ion-icon>
-      <ion-label slot="end" class="title">Skin Less Chicken</ion-label>
+      <ion-label  class="title ion-text-center">Current Rate</ion-label>
     </ion-item>
 
     <ion-card-content class="ion-text-center">
-      ₹ {{orders.liverate}}
+      ₹ {{orders.liveRate}}
     </ion-card-content>
   </ion-card>
   <ion-card>
     <ion-item>
-      <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
-      <ion-label slot="end" class="title">Skin Less Chicken</ion-label>
+      <ion-icon name="time-outline" class="size"></ion-icon>
+      <ion-label class="title ion-text-center">Cut Off Time</ion-label>
     </ion-item>
 
     <ion-card-content class="ion-text-center">
-      ₹ {{orders.liverate}}
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-item>
-      <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
-      <ion-label slot="end" class="title">Skin Less Chicken</ion-label>
-    </ion-item>
-
-    <ion-card-content class="ion-text-center">
-      ₹ {{orders.liverate}}
+       {{orders.cutOffTime}} p.m
     </ion-card-content>
   </ion-card>
