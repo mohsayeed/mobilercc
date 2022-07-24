@@ -23,7 +23,7 @@ export class AuthService {
 
   resetPassword(mobileLoginid:any , postData:any){
     return this.httpService.requestCall(
-      ApiMethod.PUT,
+      ApiMethod.POST,
       AuthEndPoints.RESET_PASSWORD,
       postData,
       mobileLoginid

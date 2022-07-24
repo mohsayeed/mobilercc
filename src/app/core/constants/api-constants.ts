@@ -9,7 +9,7 @@ export enum ApiMethod {
 
 export enum AuthEndPoints {
   AUTHENTICATE = 'TritMobileLogins/details',
-  RESET_PASSWORD = "TritMobileLogins/",
+  RESET_PASSWORD = "TritMobileLogins/resetpassword?id=",
   LATEST_RATES = "TritDailyRates/GetLatestDailyRates"
 }
   
