@@ -37,7 +37,7 @@ export class HttpService {
         break;
       case ApiMethod.POST:
         response = this.http
-          .post(`${environment.apiUrl}${api}` + queryParams, data)
+          .post(`${environment.apiUrl}${api}` + queryParams, data,header)
           .pipe(catchError((err) => this.handleError(err, this)));
         break;
       case ApiMethod.DELETE:

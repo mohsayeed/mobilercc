@@ -8,11 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
+import { NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(),AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(),AppRoutingModule, HttpClientModule,NgxUiLoaderModule,NgxUiLoaderHttpModule.forRoot({ showForeground: true }),NgxUiLoaderRouterModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },AuthService],
   bootstrap: [AppComponent],
 })
