@@ -28,6 +28,23 @@
 @font-face {   
     font-family: 'Nunito';    //This is what we are going to call
     src: url('../src/assets/Nunito/Nunito-VariableFont_wght.ttf');
-  }
+  };
+
+  ion-content{
+  //  --ion-background-color: -webkit-linear-gradient(to right, #FFFDE4, #005AA7);  /* Chrome 10-25, Safari 5.1-6 */
+   // --ion-background-color: linear-gradient(to right, #FFFDE4, #005AA7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    // --ion-background-color: #42275a;  /* fallback for old browsers */
+    // --ion-background-color: -webkit-linear-gradient(to right, #734b6d, #42275a);  /* Chrome 10-25, Safari 5.1-6 */
+    // --ion-background-color: linear-gradient(to right, #734b6d, #42275a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    // --ion-background-color: #D9AFD9;
+    // --ion-background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+    //--ion-background-color: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+    //background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  //  --ion-background-color: radial-gradient( circle 976px at 51.2% 51%,  rgba(11,27,103,1) 0%, rgba(16,66,157,1) 0%, rgba(11,27,103,1) 17.3%, rgba(11,27,103,1) 58.8%, rgba(11,27,103,1) 71.4%, rgba(16,66,157,1) 100.2%, rgba(187,187,187,1) 100.2% );
+   // --ion-background-color: linear-gradient( 135deg, #E8D07A 10%, #5312D6 100%);
+  //  --ion-background-color: linear-gradient( 174.2deg,  rgba(255,244,228,1) 7.1%, rgba(240,246,238,1) 67.4% );
+   --ion-background-color: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);
+    }
 
   

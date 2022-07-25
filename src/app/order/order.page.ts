@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class OrderPage implements OnInit {
 
   constructor() { }
-
+  orders = 10
   ngOnInit() {
   }
 
