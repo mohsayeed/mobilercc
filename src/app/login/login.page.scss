@@ -3,13 +3,25 @@
     height: 150px;
 }
 
+.error{
+    font-size:0.5em;
+    color: red;
+}
+
 
 ion-content ,ion-toolbar{ 
     font-family:Nunito !important;
     font-size:1.5em;
-  }
+}
   
 
 ion-content {
-    --padding-top: 40%;
+    --padding-top: 30%;
+}
+.margin-btm{
+    margin-bottom: 50px;
+}
+
+ion-grid{
+    padding: 20px;
 }

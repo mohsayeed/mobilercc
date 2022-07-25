@@ -5,15 +5,17 @@
 </ion-header>
 <ion-content>
   <ion-grid>
-    <ion-row>
+    <ion-row >
       <ion-col size="2"></ion-col>
-      <ion-col size="8">
+      <ion-col size="8" class="margin-btm">
         <ion-img src="../../assets/logo.png" ></ion-img>
       </ion-col>
       <ion-col size="2"></ion-col>
     </ion-row>
   </ion-grid>
   <form [formGroup]="ionicForm" (ngSubmit)="submitForm()" novalidate>
+    <ion-grid>
+      
     <ion-item lines="full" style="margin-bottom: 5px;">
       <ion-label position="floating">User Id</ion-label>
       <ion-input
@@ -51,8 +53,8 @@
       Password is required.
     </span>
     <ion-row>
-      <ion-col>
-        <ion-button type="submit" color="danger" expand="block"
+      <ion-col class="ion-text-center">
+        <ion-button type="submit" color="danger" expand="block" class="ion-margin-top"
           >Submit</ion-button
         >
       </ion-col>
@@ -62,5 +64,6 @@
         <ion-badge color="medium"class="ion-text-center"> {{errorText}} </ion-badge>
       </ion-col>
     </ion-row>
+  </ion-grid>
   </form>
 </ion-content>

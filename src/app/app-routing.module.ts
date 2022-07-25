@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'confirm-password',
     loadChildren: () => import('./confirm-password/confirm-password.module').then( m => m.ConfirmPasswordPageModule)
+  },  {
+    path: 'order',
+    loadChildren: () => import('./order/order.module').then( m => m.OrderPageModule)
   },
+
 
 ];
 @NgModule({
