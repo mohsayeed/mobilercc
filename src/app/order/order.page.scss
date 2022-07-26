@@ -1,9 +1,29 @@
-ion-content {
-    div {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-   }
+.bounce{
+    animation: bounce 0.5s;
+  animation-direction: alternate;
+  animation-timing-function: cubic-bezier(.5,0.05,1,.5);
+  animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+    from { transform: translate3d(0, 0, 0);     }
+    to   { transform: translate3d(0, 20px, 0); }
+  }
+
+  .margin-12{
+    margin-top: 12px;
+  }
+
+  ion-content{
+    font-family:Nunito !important;
+    font-size:1.3em;
+    color: black;
+    font-weight:bolder;
+}
+
+.font{
+  font-family:Nunito !important;
+  font-size:0.8em;
+  color: black;
+  font-weight:bolder;
+}

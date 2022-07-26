@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl:'https://mrcc.azure-api.net/v1/api/',
-  // apiUrl:'https://localhost:7103/api/'
+  // apiUrl:'https://mrcc.azure-api.net/v1/api/',
+  apiUrl:'https://localhost:7103/api/'
 };
 
 /*
