@@ -6,6 +6,8 @@ import { Tab1Page } from './tab1.page';
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { RatesPageModule } from '../rates/rates.module';
+import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 @NgModule({
   imports: [
@@ -13,7 +15,8 @@ import { RatesPageModule } from '../rates/rates.module';
     CommonModule,
     FormsModule,
     Tab1PageRoutingModule,
-    RatesPageModule
+    RatesPageModule,
+    ExploreContainerComponentModule
   ],
   declarations: [Tab1Page]
 })

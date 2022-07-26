@@ -24,9 +24,7 @@ export class ForcePasswordPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService._userInfoSub$.subscribe((response) => {
-      this.loginInfo = response;
-    });
+    this.loginInfo = JSON.parse( localStorage.getItem( 'loginUser' ) );
     this.resetPasswordForm = this.formBuilder.group({
       newpassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],

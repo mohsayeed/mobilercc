@@ -54,6 +54,7 @@ export class LoginPage implements OnInit {
             console.log(result);
             this.authService._userInfoSub$.next(result)
             if(result.passwordReset){
+              localStorage.setItem('loginUser', JSON.stringify(result))
               this.router.navigate(['force-password']);
             }
             else{

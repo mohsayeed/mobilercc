@@ -24,7 +24,8 @@ export class OrdersService {
       ApiMethod.POST,
       AuthEndPoints.ENTER_ORDER,
       data,
-      '?id='+userId+'&date='+date
+      '?id='+userId+'&date='+date,
+      {}
     )
   }
 

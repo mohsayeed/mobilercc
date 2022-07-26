@@ -29,4 +29,9 @@ export class AuthService {
       mobileLoginid,
     )
   }
+
+  logout(){
+    localStorage.removeItem('loginUser');
+    this.router.navigate(['/login'])
+  }
 }

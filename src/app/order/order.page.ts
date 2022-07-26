@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { OrdersService } from '../services/orders/orders.service';
 
@@ -19,7 +19,8 @@ submittButtonTxt:string;
   constructor(private alertController: AlertController,
     private authService: AuthService,
     private orderService: OrdersService,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe,
+    public toastController: ToastController) { }
   orders : number
   userId :number;
   ngOnInit() {
@@ -31,6 +32,7 @@ submittButtonTxt:string;
       .subscribe((result)=>{
         this.isOrderPresent = result.isOrderPresent;
         if(this.isOrderPresent==false){
+          this.presentToast('Order the Cages Right Now ... :))')
           this.orders = 0
           this.submittButtonTxt = 'Please Order Now !!'
         }
@@ -67,6 +69,7 @@ submittButtonTxt:string;
             .pipe()
             .subscribe(
               (result)=>{
+                this.submittButtonTxt = 'Update Order'
                 console.log(result)
               },
               (error)=>{
@@ -79,6 +82,13 @@ submittButtonTxt:string;
     });
 
     await alert.present();
+  }
+  async presentToast(msg:any) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }
