@@ -57,6 +57,11 @@ export class LoginPage implements OnInit {
               this.router.navigate(['force-password']);
             }
             else{
+              this.authService._userInfoSub$.subscribe(
+                (result)=>{
+                  localStorage.setItem('loginUser', JSON.stringify(result))
+                }
+              )
               this.router.navigate(['tabs'])
             }
           },

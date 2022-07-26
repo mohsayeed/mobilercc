@@ -155,6 +155,9 @@ let LoginPage = class LoginPage {
                     this.router.navigate(['force-password']);
                 }
                 else {
+                    this.authService._userInfoSub$.subscribe((result) => {
+                        localStorage.setItem('loginUser', JSON.stringify(result));
+                    });
                     this.router.navigate(['tabs']);
                 }
             }, (error) => {
@@ -162,17 +165,6 @@ let LoginPage = class LoginPage {
                 this.errorText = error.error.message;
                 console.log(this.errorText);
             });
-        }
-    }
-    keyPressNumbers(event) {
-        var charCode = event.which ? event.which : event.keyCode;
-        // Only Numbers 0-9
-        if (charCode < 48 || charCode > 57) {
-            event.preventDefault();
-            return false;
-        }
-        else {
-            return true;
         }
     }
 };
@@ -199,7 +191,7 @@ LoginPage = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = ".size {\n  width: 150px;\n  height: 150px;\n}\n\nion-content, ion-toolbar {\n  font-family: Nunito !important;\n  font-size: 1.5em;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxvZ2luLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFlBQUE7RUFDQSxhQUFBO0FBQ0o7O0FBR0E7RUFDSSw4QkFBQTtFQUNBLGdCQUFBO0FBQUoiLCJmaWxlIjoibG9naW4ucGFnZS5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnNpemV7XHJcbiAgICB3aWR0aDogMTUwcHg7XHJcbiAgICBoZWlnaHQ6IDE1MHB4O1xyXG59XHJcblxyXG5cclxuaW9uLWNvbnRlbnQgLGlvbi10b29sYmFyeyBcclxuICAgIGZvbnQtZmFtaWx5Ok51bml0byAhaW1wb3J0YW50O1xyXG4gICAgZm9udC1zaXplOjEuNWVtO1xyXG4gIH1cclxuICAiXX0= */";
+module.exports = ".size {\n  width: 150px;\n  height: 150px;\n}\n\n.error {\n  font-size: 0.5em;\n  color: red;\n}\n\nion-content, ion-toolbar {\n  font-family: Nunito !important;\n  font-size: 1.5em;\n}\n\nion-content {\n  --padding-top: 30%;\n}\n\n.margin-btm {\n  margin-bottom: 50px;\n}\n\nion-grid {\n  padding: 20px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxvZ2luLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFlBQUE7RUFDQSxhQUFBO0FBQ0o7O0FBRUE7RUFDSSxnQkFBQTtFQUNBLFVBQUE7QUFDSjs7QUFHQTtFQUNJLDhCQUFBO0VBQ0EsZ0JBQUE7QUFBSjs7QUFJQTtFQUNJLGtCQUFBO0FBREo7O0FBR0E7RUFDSSxtQkFBQTtBQUFKOztBQUdBO0VBQ0ksYUFBQTtBQUFKIiwiZmlsZSI6ImxvZ2luLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5zaXple1xyXG4gICAgd2lkdGg6IDE1MHB4O1xyXG4gICAgaGVpZ2h0OiAxNTBweDtcclxufVxyXG5cclxuLmVycm9ye1xyXG4gICAgZm9udC1zaXplOjAuNWVtO1xyXG4gICAgY29sb3I6IHJlZDtcclxufVxyXG5cclxuXHJcbmlvbi1jb250ZW50ICxpb24tdG9vbGJhcnsgXHJcbiAgICBmb250LWZhbWlseTpOdW5pdG8gIWltcG9ydGFudDtcclxuICAgIGZvbnQtc2l6ZToxLjVlbTtcclxufVxyXG4gIFxyXG5cclxuaW9uLWNvbnRlbnQge1xyXG4gICAgLS1wYWRkaW5nLXRvcDogMzAlO1xyXG59XHJcbi5tYXJnaW4tYnRte1xyXG4gICAgbWFyZ2luLWJvdHRvbTogNTBweDtcclxufVxyXG5cclxuaW9uLWdyaWR7XHJcbiAgICBwYWRkaW5nOiAyMHB4O1xyXG59Il19 */";
 
 /***/ }),
 
@@ -209,7 +201,7 @@ module.exports = ".size {\n  width: 150px;\n  height: 150px;\n}\n\nion-content, 
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title class=\"ion-text-center\">Login</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n  <ion-grid>\n    <ion-row>\n      <ion-col size=\"2\"></ion-col>\n      <ion-col size=\"8\">\n        <ion-img src=\"../../assets/logo.png\" class=\"size\"></ion-img>\n      </ion-col>\n      <ion-col size=\"2\"></ion-col>\n    </ion-row>\n  </ion-grid>\n  <form [formGroup]=\"ionicForm\" (ngSubmit)=\"submitForm()\" novalidate>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">User Id</ion-label>\n      <ion-input\n        formControlName=\"userid\"\n        type=\"numerical\"\n        maxlength=\"12\"\n        (keypress)=\"keyPressNumbers($event)\"\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.userid.errors?.required\"\n    >\n      User Id is required.\n    </span>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.userid.errors?.pattern\"\n    >\n      User Id is of Length 12\n    </span>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">Password </ion-label>\n      <ion-input\n        maxlength=\"10\"\n        formControlName=\"password\"\n        type=\"password\"\n        required\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.password.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <ion-row>\n      <ion-col>\n        <ion-button type=\"submit\" color=\"danger\" expand=\"block\"\n          >Submit</ion-button\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"errorText!=''\">\n      <ion-col class=\"ion-text-center\" >\n        <ion-badge color=\"medium\"class=\"ion-text-center\"> {{errorText}} </ion-badge>\n      </ion-col>\n    </ion-row>\n  </form>\n</ion-content>\n";
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title class=\"ion-text-center\">Login</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n  <ion-grid>\n    <ion-row >\n      <ion-col size=\"2\"></ion-col>\n      <ion-col size=\"8\" class=\"margin-btm\">\n        <ion-img src=\"../../assets/logo.png\" ></ion-img>\n      </ion-col>\n      <ion-col size=\"2\"></ion-col>\n    </ion-row>\n  </ion-grid>\n  <form [formGroup]=\"ionicForm\" (ngSubmit)=\"submitForm()\" novalidate>\n    <ion-grid>\n      \n    <ion-item lines=\"full\" style=\"margin-bottom: 5px;\">\n      <ion-label position=\"floating\">User Id</ion-label>\n      <ion-input\n        formControlName=\"userid\"\n        type=\"number\"\n        maxlength=\"13\"\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.userid.errors?.required\"\n    >\n      User Id is required.\n    </span>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.userid.errors?.pattern\"\n    >\n      User Id is of Length 12\n    </span>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">Password </ion-label>\n      <ion-input\n        maxlength=\"10\"\n        formControlName=\"password\"\n        type=\"password\"\n        required\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.password.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <ion-row>\n      <ion-col class=\"ion-text-center\">\n        <ion-button type=\"submit\" color=\"danger\" expand=\"block\" class=\"ion-margin-top\"\n          >Submit</ion-button\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"errorText!=''\">\n      <ion-col class=\"ion-text-center\" >\n        <ion-badge color=\"medium\"class=\"ion-text-center\"> {{errorText}} </ion-badge>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  </form>\n</ion-content>\n";
 
 /***/ })
 

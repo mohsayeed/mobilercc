@@ -58,6 +58,7 @@ export class ForcePasswordPage implements OnInit {
           .subscribe(
             (result:any) => {
               this.authService._userInfoSub$.next(postData)
+              localStorage.setItem('loginUser', JSON.stringify(postData))
               this.router.navigate(['tabs']);
             },
             (error:any) => {console.log(error)}

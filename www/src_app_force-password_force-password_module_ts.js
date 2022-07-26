@@ -151,6 +151,7 @@ let ForcePasswordPage = class ForcePasswordPage {
                     .pipe()
                     .subscribe((result) => {
                     this.authService._userInfoSub$.next(postData);
+                    localStorage.setItem('loginUser', JSON.stringify(postData));
                     this.router.navigate(['tabs']);
                 }, (error) => { console.log(error); });
             }

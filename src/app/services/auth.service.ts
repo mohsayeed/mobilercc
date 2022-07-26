@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpService } from '../core/http/http.service';
 import { ApiMethod, AuthEndPoints } from '../core/constants/api-constants';
-import { HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })

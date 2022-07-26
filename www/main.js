@@ -11,9 +11,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppRoutingModule": () => (/* binding */ AppRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ 4929);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/auth/auth-guard.guard */ 4399);
+
 
 
 
@@ -21,18 +23,26 @@ const routes = [
     {
         path: 'tabs',
         loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_tabs_tabs_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./tabs/tabs.module */ 5564)).then((m) => m.TabsPageModule),
+        canActivate: [_core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuardGuard]
     },
     {
         path: 'rates',
         loadChildren: () => __webpack_require__.e(/*! import() */ "common").then(__webpack_require__.bind(__webpack_require__, /*! ./rates/rates.module */ 4297)).then((m) => m.RatesPageModule),
+        canActivate: [_core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuardGuard]
     },
     {
         path: '',
+        redirectTo: 'tabs',
+        pathMatch: 'full'
+    },
+    {
+        path: 'login',
         loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_login_login_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./login/login.module */ 107)).then((m) => m.LoginPageModule),
     },
     {
         path: 'force-password',
         loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_force-password_force-password_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./force-password/force-password.module */ 9997)).then((m) => m.ForcePasswordPageModule),
+        canActivate: [_core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuardGuard]
     },
     // {
     //   path: '',
@@ -43,17 +53,23 @@ const routes = [
     // },
     {
         path: 'confirm-password',
-        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_confirm-password_confirm-password_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./confirm-password/confirm-password.module */ 852)).then(m => m.ConfirmPasswordPageModule)
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_confirm-password_confirm-password_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./confirm-password/confirm-password.module */ 852)).then(m => m.ConfirmPasswordPageModule),
+        canActivate: [_core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuardGuard]
+    },
+    {
+        path: 'order',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "common").then(__webpack_require__.bind(__webpack_require__, /*! ./order/order.module */ 8865)).then(m => m.OrderPageModule),
+        canActivate: [_core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuardGuard]
     },
 ];
 let AppRoutingModule = class AppRoutingModule {
 };
-AppRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.NgModule)({
+AppRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.NgModule)({
         imports: [
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__.RouterModule.forRoot(routes, { preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_2__.PreloadAllModules }),
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__.RouterModule.forRoot(routes, { preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_3__.PreloadAllModules }),
         ],
-        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__.RouterModule],
+        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_3__.RouterModule],
     })
 ], AppRoutingModule);
 
@@ -107,16 +123,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppModule": () => (/* binding */ AppModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4929);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/platform-browser */ 4497);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 124);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ 3819);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/platform-browser */ 4497);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/angular */ 3819);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app-routing.module */ 158);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component */ 5041);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ 8987);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common/http */ 8987);
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/auth.service */ 7556);
-/* harmony import */ var ngx_ui_loader__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ngx-ui-loader */ 6413);
+/* harmony import */ var ngx_ui_loader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-ui-loader */ 6413);
+/* harmony import */ var _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/orders/orders.service */ 4242);
+/* harmony import */ var _core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./core/auth/auth-guard.guard */ 4399);
 
 
 
@@ -127,16 +145,78 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+const ngxUiLoaderConfig = {
+    bgsColor: 'red',
+    bgsType: ngx_ui_loader__WEBPACK_IMPORTED_MODULE_5__.SPINNER.threeStrings,
+    blur: 25,
+    fastFadeOut: true,
+    fgsColor: 'red',
+    fgsType: ngx_ui_loader__WEBPACK_IMPORTED_MODULE_5__.SPINNER.threeBounce,
+    pbColor: 'red',
+    pbThickness: 5,
+    hasProgressBar: true,
+};
 let AppModule = class AppModule {
 };
-AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.NgModule)({
+AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgModule)({
         declarations: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent],
-        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__.BrowserModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.IonicModule.forRoot(), _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_7__.HttpClientModule, ngx_ui_loader__WEBPACK_IMPORTED_MODULE_8__.NgxUiLoaderModule, ngx_ui_loader__WEBPACK_IMPORTED_MODULE_8__.NgxUiLoaderHttpModule.forRoot({ showForeground: true }), ngx_ui_loader__WEBPACK_IMPORTED_MODULE_8__.NgxUiLoaderRouterModule],
-        providers: [{ provide: _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouteReuseStrategy, useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.IonicRouteStrategy }, _services_auth_service__WEBPACK_IMPORTED_MODULE_2__.AuthService],
+        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_8__.BrowserModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.IonicModule.forRoot(), _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule,
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_10__.HttpClientModule, ngx_ui_loader__WEBPACK_IMPORTED_MODULE_5__.NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+            ngx_ui_loader__WEBPACK_IMPORTED_MODULE_5__.NgxUiLoaderHttpModule.forRoot({ showForeground: true }), ngx_ui_loader__WEBPACK_IMPORTED_MODULE_5__.NgxUiLoaderRouterModule],
+        providers: [{ provide: _angular_router__WEBPACK_IMPORTED_MODULE_11__.RouteReuseStrategy, useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.IonicRouteStrategy }, _services_auth_service__WEBPACK_IMPORTED_MODULE_2__.AuthService, _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_3__.OrdersService, _core_auth_auth_guard_guard__WEBPACK_IMPORTED_MODULE_4__.AuthGuardGuard],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent],
     })
 ], AppModule);
+
+
+
+/***/ }),
+
+/***/ 4399:
+/*!***********************************************!*\
+  !*** ./src/app/core/auth/auth-guard.guard.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AuthGuardGuard": () => (/* binding */ AuthGuardGuard)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ 124);
+
+
+
+let AuthGuardGuard = class AuthGuardGuard {
+    constructor(router) {
+        this.router = router;
+    }
+    canActivate(route, state) {
+        if (this.loggedIn()) {
+            return true;
+        }
+        else {
+            this.router.navigate(['/login']);
+            return false;
+        }
+    }
+    loggedIn() {
+        return !!localStorage.getItem('loginUser');
+    }
+};
+AuthGuardGuard.ctorParameters = () => [
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_0__.Router }
+];
+AuthGuardGuard = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Injectable)({
+        providedIn: 'root'
+    })
+], AuthGuardGuard);
 
 
 
@@ -167,6 +247,8 @@ var AuthEndPoints;
     AuthEndPoints["AUTHENTICATE"] = "TritMobileLogins/details";
     AuthEndPoints["RESET_PASSWORD"] = "TritMobileLogins/resetpassword?id=";
     AuthEndPoints["LATEST_RATES"] = "TritDailyRates/GetLatestDailyRates";
+    AuthEndPoints["ISORDERPRESENT"] = "TritOrders/isOrderPresent";
+    AuthEndPoints["ENTER_ORDER"] = "TritOrders/enterorder";
 })(AuthEndPoints || (AuthEndPoints = {}));
 
 
@@ -328,6 +410,53 @@ AuthService = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([
 
 /***/ }),
 
+/***/ 4242:
+/*!***************************************************!*\
+  !*** ./src/app/services/orders/orders.service.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "OrdersService": () => (/* binding */ OrdersService)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var src_app_core_http_http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/core/http/http.service */ 8776);
+/* harmony import */ var src_app_core_constants_api_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/constants/api-constants */ 289);
+
+
+
+
+
+let OrdersService = class OrdersService {
+    constructor(httpService, router) {
+        this.httpService = httpService;
+        this.router = router;
+    }
+    isOrderTodayPresent(userId, date) {
+        return this.httpService.requestCall(src_app_core_constants_api_constants__WEBPACK_IMPORTED_MODULE_1__.ApiMethod.GET, src_app_core_constants_api_constants__WEBPACK_IMPORTED_MODULE_1__.AuthEndPoints.ISORDERPRESENT, {}, '?userid=' + userId + '&date=' + date);
+    }
+    enterOrder(userId, data, date) {
+        return this.httpService.requestCall(src_app_core_constants_api_constants__WEBPACK_IMPORTED_MODULE_1__.ApiMethod.POST, src_app_core_constants_api_constants__WEBPACK_IMPORTED_MODULE_1__.AuthEndPoints.ENTER_ORDER, data, '?id=' + userId + '&date=' + date);
+    }
+};
+OrdersService.ctorParameters = () => [
+    { type: src_app_core_http_http_service__WEBPACK_IMPORTED_MODULE_0__.HttpService },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.Router }
+];
+OrdersService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Injectable)({
+        providedIn: 'root'
+    })
+], OrdersService);
+
+
+
+/***/ }),
+
 /***/ 2340:
 /*!*****************************************!*\
   !*** ./src/environments/environment.ts ***!
@@ -344,8 +473,8 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 const environment = {
     production: false,
-    apiUrl: 'https://mrcc.azure-api.net/v1/api/',
-    // apiUrl:'https://localhost:7103/api/'
+    // apiUrl:'https://mrcc.azure-api.net/v1/api/',
+    apiUrl: 'https://localhost:7103/api/'
 };
 /*
  * For easier debugging in development mode, you can import the following file
@@ -657,7 +786,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<ion-app>\n  <div ngxUiLoaderBlurred [blur]=\"10\">\n    <!-- This page content will be blurred/frosted when foreground loader is showed -->\n  </div>\n  <ngx-ui-loader></ngx-ui-loader>  \n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n";
+module.exports = "<ion-app>\n  <div ngxUiLoaderBlurred [blur]=\"10\">\n    <!-- This page content will be blurred/frosted when foreground loader is showed -->\n  </div>\n  <ngx-ui-loader ></ngx-ui-loader>  \n  <ng-template #foregroundSpinner>\n      </ng-template>\n  \n  <ng-template #backgroundSpinner>\n\n  </ng-template>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n";
 
 /***/ })
 
