@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardGuard } from './core/auth/auth-guard.guard';
+import { LoginGuard } from './core/auth/login.guard';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginPageModule),
+      canActivate:[LoginGuard]
   },
   {
     path: 'force-password',
@@ -33,13 +35,6 @@ const routes: Routes = [
       ),
     canActivate:[AuthGuardGuard]
   },
-  // {
-  //   path: '',
-  //   loadChildren: () =>
-  //     import('./force-password/force-password.module').then(
-  //       (m) => m.ForcePasswordPageModule
-  //     ),
-  // },
   {
     path: 'confirm-password',
     loadChildren: () => import('./confirm-password/confirm-password.module').then( m => m.ConfirmPasswordPageModule),
@@ -49,7 +44,11 @@ const routes: Routes = [
     path: 'order',
     loadChildren: () => import('./order/order.module').then( m => m.OrderPageModule),
     canActivate:[AuthGuardGuard]
+  },  {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
   },
+
 
 
 ];

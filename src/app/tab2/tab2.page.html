@@ -1,36 +1,23 @@
-<ion-header [translucent]="true">
+<ion-header  [translucent]="true">
   <ion-toolbar>
-    <ion-grid>
-    <ion-row>
-     <ion-col size="8">
-       <ion-title>
-         Daily Orders
-       </ion-title>
-     </ion-col>
-     <ion-col size="4">
-       <app-explore-container></app-explore-container>
-     </ion-col>
-    </ion-row>
-    </ion-grid>
-   </ion-toolbar>
-</ion-header>
+    <app-header ></app-header>
+  </ion-toolbar>
+  </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [scrollY]="true" [forceOverscroll]="true" color="light">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-grid>
       <ion-row>
-       <ion-col size="8">
-         <ion-title>
+       <ion-col class="ion-text-center">
            Daily Orders
-         </ion-title>
-       </ion-col>
-       <ion-col size="4">
-         <app-explore-container></app-explore-container>
        </ion-col>
       </ion-row>
       </ion-grid>
      </ion-toolbar>
   </ion-header>
-<app-order></app-order>
+  <ion-title class="ion-text-center ion-padding font">
+    Daily Orders
+  </ion-title>
+  <app-order></app-order>
 </ion-content>

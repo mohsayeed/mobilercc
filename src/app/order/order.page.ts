@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
-import { AuthService } from '../services/auth.service';
+import { AlertController } from '@ionic/angular';
+import { ToastrService } from 'ngx-toastr';
+import { DailyratesService } from '../services/dailyrates.service';
 import { OrdersService } from '../services/orders/orders.service';
 
 @Component({
@@ -15,14 +16,16 @@ import { OrdersService } from '../services/orders/orders.service';
 export class OrderPage implements OnInit {
 today = new Date()
 isOrderPresent :any;
+isDisableButton:boolean
 submittButtonTxt:string;
   constructor(private alertController: AlertController,
-    private authService: AuthService,
     private orderService: OrdersService,
     private datePipe: DatePipe,
-    public toastController: ToastController) { }
+    private toastr: ToastrService,
+    private dailyRatesService : DailyratesService) { }
   orders : number
   userId :number;
+  cutOffTime:string
   ngOnInit() {
     let response = JSON.parse( localStorage.getItem( 'loginUser' ) );
       this.userId = (response.userId);
@@ -32,13 +35,15 @@ submittButtonTxt:string;
       .subscribe((result)=>{
         this.isOrderPresent = result.isOrderPresent;
         if(this.isOrderPresent==false){
-          this.presentToast('Order the Cages Right Now ... :))')
+          this.toastr.success('Order the Cages Right Now ... :))');
           this.orders = 0
           this.submittButtonTxt = 'Please Order Now !!'
+          this.isDisable()
         }
         else{
           this.orders = result.order.orderCages
           this.submittButtonTxt = 'Update Order'
+          this.isDisable()
         }
       })
   }
@@ -70,10 +75,10 @@ submittButtonTxt:string;
             .subscribe(
               (result)=>{
                 this.submittButtonTxt = 'Update Order'
-                console.log(result)
+                this.toastr.success('Your Order has Successfully Placed');
               },
               (error)=>{
-                console.log(error)
+                this.toastr.error('Please Retry After Some Time');
               }
             )
            }
@@ -83,12 +88,41 @@ submittButtonTxt:string;
 
     await alert.present();
   }
-  async presentToast(msg:any) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 2000
-    });
-    toast.present();
+
+  isDisable(){
+    this.dailyRatesService.getLatestRates().pipe().subscribe(
+      (response)=>{
+        let data = (response)
+        let today = new Date();
+        let hour = today.getHours()
+        let min = today.getMinutes()
+        // let givenHour = 17
+        // let givenMin = 30
+        this.cutOffTime = data.cutOffTime
+        let splitted = data.cutOffTime.split(":");
+        let givenHour = splitted[0]
+        let givenMin = splitted[1]
+        console.log(hour.toString(),min.toString(),givenHour,givenMin)
+       
+
+        if(hour<givenHour){
+          this.isDisableButton = false 
+        }
+        else{
+          if(hour==givenHour){
+            if(min<=givenMin){
+              this.isDisableButton = false
+            }
+            else{
+              this.isDisableButton= true
+            }
+          }
+          else{
+            this.isDisableButton = true
+          }
+        }
+      }
+    )
   }
 
 }

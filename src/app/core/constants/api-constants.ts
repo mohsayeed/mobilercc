@@ -12,6 +12,7 @@ export enum AuthEndPoints {
   RESET_PASSWORD = "TritMobileLogins/resetpassword?id=",
   LATEST_RATES = "TritDailyRates/GetLatestDailyRates",
   ISORDERPRESENT = "TritOrders/isOrderPresent",
-  ENTER_ORDER = "TritOrders/enterorder"
+  ENTER_ORDER = "TritOrders/enterorder",
+  GET_USERNAME = "TritUsers/"
 }
   

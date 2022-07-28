@@ -1,0 +1,19 @@
+    <ion-grid>
+    <ion-row>
+     <ion-col size="4">
+      <ion-chip color="primary">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <ion-label class="font" >Hi {{userName}}</ion-label>
+      </ion-chip>
+     </ion-col>
+     <ion-col>
+      <ion-img src="../../assets/logo.png" class="bounce ion-text-center" > </ion-img>
+     </ion-col>
+     <ion-col size="4" class="ion-text-center">
+      <ion-chip color="danger" (click)="logout()">
+        <ion-icon name="power-outline" ></ion-icon>
+        <ion-label class="">Logout</ion-label>
+      </ion-chip>
+     </ion-col>
+    </ion-row>
+    </ion-grid>

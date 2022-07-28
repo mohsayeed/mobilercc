@@ -37,7 +37,6 @@ export class ForcePasswordPage implements OnInit {
   submitForm() {
     this.isSubmitted = true;
     if (!this.resetPasswordForm.valid) {
-      console.log(this.errorControl);
       return false;
     } else {
       let password = this.resetPasswordForm.value.newpassword;
@@ -57,9 +56,11 @@ export class ForcePasswordPage implements OnInit {
             (result:any) => {
               this.authService._userInfoSub$.next(postData)
               localStorage.setItem('loginUser', JSON.stringify(postData))
-              this.router.navigate(['tabs']);
+              this.router.navigate(['tabs/tab1']);
             },
-            (error:any) => {console.log(error)}
+            (error:any) => {
+
+            }
           );
       }
     }

@@ -13,7 +13,7 @@ export class RatesPage implements OnInit {
     "liveRate": 200,
     "skinlessRate": 200,
     "withSkinRate": 200,
-    "cutOffTime": "17:30:00"
+    "cutOffTime": "000"
   }
   ngOnInit() {
     this.dailyRatesService

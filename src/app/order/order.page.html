@@ -1,14 +1,16 @@
-<ion-content fullscreen>
   <ion-grid>
     <ion-row>
       <ion-col> </ion-col> 
       <ion-col> </ion-col> 
       <ion-col style="text-align-last: right;"> <ion-badge  color="danger" class="font">{{today | date:'fullDate'}}</ion-badge></ion-col>
     </ion-row>
-  </ion-grid>
-  <ion-img src="../../assets/icon/chicken-order.png" class="bounce"> </ion-img>
-  <ion-grid>
-    <ion-row>
+  <ion-row>
+    <ion-col> </ion-col> 
+    <ion-col>   <ion-img src="../../assets/icon/chicken-order.png" class="bounce ion-text-center" > </ion-img>
+    </ion-col> 
+    <ion-col> </ion-col> 
+  </ion-row>
+  <ion-row>
       <ion-col> </ion-col>
       <ion-col>
         <ion-input
@@ -23,9 +25,18 @@
     </ion-row>
     <ion-row>
       <ion-col class="ion-text-center">
-        <ion-button  (click)="presentAlert()" type="submit" color="danger" class="ion-margin-top"
+        <ion-button  (click)="presentAlert()" type="submit"  class="ion-margin-top" color="danger"  [attr.disabled]="isDisableButton?true:null"
           >{{submittButtonTxt}}</ion-button>
       </ion-col>
     </ion-row>
+    <ion-row>
+
+      <ion-col *ngIf="isDisableButton" class="ion-text-center">
+<ion-chip>
+  <ion-icon name="alert-outline" color="danger"></ion-icon>
+  <ion-label><b>You Can't Order Beyond {{cutOffTime}}</b></ion-label>
+</ion-chip>
+      </ion-col>
+
+    </ion-row>
   </ion-grid>
-</ion-content>

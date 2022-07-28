@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/users/user.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,9 @@ export class LoginPage implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private userService:UserService,
+    private toastr: ToastrService
   ) {}
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -38,7 +42,6 @@ export class LoginPage implements OnInit {
   submitForm() {
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');
       return false;
     } else {
       let userid = this.ionicForm.value.userid;
@@ -51,28 +54,29 @@ export class LoginPage implements OnInit {
           (result: any) => {
             this.show = false;
             this.errorText = '';
-            console.log(result);
-            this.authService._userInfoSub$.next(result)
-            if(result.passwordReset){
-              localStorage.setItem('loginUser', JSON.stringify(result))
+            this.authService._userInfoSub$.next(result);
+            if (result.passwordReset) {
+              localStorage.setItem('loginUser', JSON.stringify(result));
               this.router.navigate(['force-password']);
-            }
-            else{
-              this.authService._userInfoSub$.subscribe(
-                (result)=>{
-                  localStorage.setItem('loginUser', JSON.stringify(result))
-                }
-              )
-              this.router.navigate(['tabs'])
+            } else {
+              this.authService._userInfoSub$.subscribe((result) => {
+                localStorage.setItem('loginUser', JSON.stringify(result));
+                this.userService
+                  .getUserName(result.userId)
+                  .pipe()
+                  .subscribe((result) => {
+                    localStorage.setItem('userName',result.userName)
+                    this.router.navigate(['tabs/tab1']);
+                  });
+              });
             }
           },
           (error: any) => {
             this.show = true;
             this.errorText = error.error.message;
-            console.log(this.errorText);
+            this.toastr.error(error.error.message);
           }
         );
     }
   }
-
 }
