@@ -7,14 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { ReportsPageRoutingModule } from './reports-routing.module';
 
 import { ReportsPage } from './reports.page';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReportsPageRoutingModule
+    ReportsPageRoutingModule,
+    NgChartsModule
   ],
-  declarations: [ReportsPage]
+  declarations: [ReportsPage],
+  exports:[ReportsPage]
 })
 export class ReportsPageModule {}
