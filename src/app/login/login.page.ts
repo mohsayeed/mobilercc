@@ -28,8 +28,6 @@ export class LoginPage implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('[0-9]{12}$'),
-          Validators.maxLength(12),
         ],
       ],
       password: ['', [Validators.required]],

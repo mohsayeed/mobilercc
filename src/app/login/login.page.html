@@ -22,7 +22,6 @@
       clearInput 
         formControlName="userid"
         type="number"
-        maxlength="13"
       ></ion-input>
     </ion-item>
     <span
@@ -30,12 +29,6 @@
       *ngIf="isSubmitted && errorControl.userid.errors?.required"
     >
       User Id is required.
-    </span>
-    <span
-      class="error ion-padding"
-      *ngIf="isSubmitted && errorControl.userid.errors?.pattern"
-    >
-      User Id is of Length 12
     </span>
     <ion-item lines="full">
       <ion-label position="floating">Password </ion-label>

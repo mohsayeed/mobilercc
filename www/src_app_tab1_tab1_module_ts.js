@@ -48,14 +48,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Tab1PageModule": () => (/* binding */ Tab1PageModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4929);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ 3819);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 4666);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ 2508);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ionic/angular */ 3819);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 4666);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 2508);
 /* harmony import */ var _tab1_page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tab1.page */ 6923);
 /* harmony import */ var _tab1_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tab1-routing.module */ 2580);
 /* harmony import */ var _rates_rates_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../rates/rates.module */ 4297);
+/* harmony import */ var _order_order_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../order/order.module */ 8865);
+/* harmony import */ var _header_header_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../header/header.module */ 677);
+
+
 
 
 
@@ -66,14 +70,16 @@ __webpack_require__.r(__webpack_exports__);
 
 let Tab1PageModule = class Tab1PageModule {
 };
-Tab1PageModule = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.NgModule)({
+Tab1PageModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
         imports: [
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonicModule,
-            _angular_common__WEBPACK_IMPORTED_MODULE_6__.CommonModule,
-            _angular_forms__WEBPACK_IMPORTED_MODULE_7__.FormsModule,
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_7__.IonicModule,
+            _angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule,
+            _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule,
             _tab1_routing_module__WEBPACK_IMPORTED_MODULE_1__.Tab1PageRoutingModule,
-            _rates_rates_module__WEBPACK_IMPORTED_MODULE_2__.RatesPageModule
+            _rates_rates_module__WEBPACK_IMPORTED_MODULE_2__.RatesPageModule,
+            _order_order_module__WEBPACK_IMPORTED_MODULE_3__.OrderPageModule,
+            _header_header_module__WEBPACK_IMPORTED_MODULE_4__.HeaderPageModule
         ],
         declarations: [_tab1_page__WEBPACK_IMPORTED_MODULE_0__.Tab1Page]
     })
@@ -102,9 +108,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let Tab1Page = class Tab1Page {
-    constructor() { }
+    ngOnInit() {
+    }
 };
-Tab1Page.ctorParameters = () => [];
 Tab1Page = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
     (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
         selector: 'app-tab1',
@@ -123,7 +129,7 @@ Tab1Page = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
   \************************************************/
 /***/ ((module) => {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJ0YWIxLnBhZ2Uuc2NzcyJ9 */";
+module.exports = ".font {\n  font: 2em sans-serif;\n  font-weight: 900;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRhYjEucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksb0JBQUE7RUFDQSxnQkFBQTtBQUNKIiwiZmlsZSI6InRhYjEucGFnZS5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmZvbnR7XHJcbiAgICBmb250OiAyZW0gc2Fucy1zZXJpZjtcclxuICAgIGZvbnQtd2VpZ2h0OiA5MDA7XHJcbn0iXX0= */";
 
 /***/ }),
 
@@ -133,7 +139,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
   \************************************************/
 /***/ ((module) => {
 
-module.exports = "<ion-header [translucent]=\"true\" >\n  <ion-toolbar>\n    <ion-title>\n      Daily Rates\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\" [scrollY]=\"true\" [fullscreen]=\"true\"[forceOverscroll]=\"true\" color=\"light\">\n  <ion-header collapse=\"condense\">\n    <ion-toolbar>\n      <ion-title size=\"large\">Daily Rates</ion-title>\n    </ion-toolbar>\n  </ion-header>\n  <app-rates></app-rates>\n</ion-content>\n";
+module.exports = "<ion-header  [translucent]=\"true\">\n<ion-toolbar>\n  <app-header ></app-header>\n</ion-toolbar>\n</ion-header>\n<ion-content [fullscreen]=\"true\" [scrollY]=\"false\" [forceOverscroll]=\"true\" color=\"light\">\n  <ion-header collapse=\"condense\">\n    <ion-toolbar>\n      <ion-grid>\n      <ion-row>\n       <ion-col class=\"ion-text-center font\">\n           Daily Rates\n       </ion-col>\n      </ion-row>\n      </ion-grid>\n     </ion-toolbar>\n  </ion-header>\n  <app-rates></app-rates>\n</ion-content>\n";
 
 /***/ })
 

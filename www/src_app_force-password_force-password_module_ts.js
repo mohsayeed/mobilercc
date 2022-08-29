@@ -117,9 +117,7 @@ let ForcePasswordPage = class ForcePasswordPage {
         this.showConfirmPassword = false;
     }
     ngOnInit() {
-        this.authService._userInfoSub$.subscribe((response) => {
-            this.loginInfo = response;
-        });
+        this.loginInfo = JSON.parse(localStorage.getItem('loginUser'));
         this.resetPasswordForm = this.formBuilder.group({
             newpassword: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.minLength(8)]],
             confirmPassword: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.minLength(8)]],
@@ -131,7 +129,6 @@ let ForcePasswordPage = class ForcePasswordPage {
     submitForm() {
         this.isSubmitted = true;
         if (!this.resetPasswordForm.valid) {
-            console.log(this.errorControl);
             return false;
         }
         else {
@@ -152,8 +149,9 @@ let ForcePasswordPage = class ForcePasswordPage {
                     .subscribe((result) => {
                     this.authService._userInfoSub$.next(postData);
                     localStorage.setItem('loginUser', JSON.stringify(postData));
-                    this.router.navigate(['tabs']);
-                }, (error) => { console.log(error); });
+                    this.router.navigate(['tabs/tab1']);
+                }, (error) => {
+                });
             }
         }
     }
@@ -197,7 +195,7 @@ module.exports = "ion-content, ion-toolbar {\n  font-family: Nunito !important;\
   \********************************************************************/
 /***/ ((module) => {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n        <ion-title>Reset Password</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <form [formGroup]=\"resetPasswordForm\" (ngSubmit)=\"submitForm()\" novalidate>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">New Password</ion-label>\n      <ion-grid>\n        <ion-row>\n          <ion-col class=\"\">\n            <ion-input\n            formControlName=\"newpassword\"\n            maxlength=\"12\"\n            [type]=\"showNewPassword ? 'text' : 'password'\" \n            required\n          ></ion-input>\n          </ion-col>\n          <ion-col class=\"end\">\n            <ion-icon name=\"eye-off-outline\" class=\"end\" *ngIf=\"!showNewPassword\" (click) = \"revealNewPassword()\"></ion-icon>\n            <ion-icon name=\"eye-outline\" class=\"end\" *ngIf=\"showNewPassword\" (click) = \"revealNewPassword()\"></ion-icon>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n    <span\n      class=\"error ion-padding size\"\n      *ngIf=\"isSubmitted && errorControl.newpassword.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <span\n    class=\"error ion-padding size\"\n    *ngIf=\"isSubmitted && errorControl.newpassword.errors?.minlength\"\n  >\n    Mininum Lenght of Password is {{errorControl.newpassword.errors?.minlength.requiredLength}}\n  </span>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">Confirm Password </ion-label>\n      <ion-grid>\n        <ion-row>\n          <ion-col class=\"ion-align-self-start\">\n            <ion-input\n            maxlength=\"12\"\n            formControlName=\"confirmPassword\"\n            [type]=\"showConfirmPassword ? 'text' : 'password'\" \n            required\n          ></ion-input>\n          </ion-col>\n          <ion-col class=\"end\">\n            <ion-icon name=\"eye-off-outline\" class=\"end\" *ngIf=\"!showConfirmPassword\" (click) = \"revealConfirmPassword()\"></ion-icon>\n            <ion-icon name=\"eye-outline\" class=\"end\" *ngIf=\"showConfirmPassword\" (click) = \"revealConfirmPassword()\"></ion-icon>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n    <span\n      class=\"error ion-padding size\"\n      *ngIf=\"isSubmitted && errorControl.confirmPassword.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <span\n      class=\"error ion-padding size\"\n      *ngIf=\"isSubmitted && (errorControl.confirmPassword.value != errorControl.newpassword.value)\"\n    >\n      Password doesn't Match\n    </span>\n    \n    <ion-row>\n      <ion-col>\n        <ion-button type=\"submit\" color=\"danger\" expand=\"block\"\n          >Update Password</ion-button\n        >\n      </ion-col>\n    </ion-row>\n  </form>\n</ion-content>\n\n\n";
+module.exports = "<ion-header>\n  <ion-toolbar>\n        <ion-title>Reset Password</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <form [formGroup]=\"resetPasswordForm\" (ngSubmit)=\"submitForm()\" novalidate>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">New Password</ion-label>\n      <ion-grid>\n        <ion-row>\n          <ion-col class=\"\">\n            <ion-input\n            formControlName=\"newpassword\"\n            maxlength=\"12\"\n            [type]=\"showNewPassword ? 'text' : 'password'\" \n            required\n          ></ion-input>\n          </ion-col>\n          <ion-col class=\"end\">\n            <ion-icon name=\"eye-off-outline\" class=\"end\" *ngIf=\"!showNewPassword\" (click) = \"revealNewPassword()\"></ion-icon>\n            <ion-icon name=\"eye-outline\" class=\"end\" *ngIf=\"showNewPassword\" (click) = \"revealNewPassword()\"></ion-icon>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n    <span\n      class=\"error ion-padding size\"\n      *ngIf=\"isSubmitted && errorControl.newpassword.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <span\n    class=\"error ion-padding size\"\n    *ngIf=\"isSubmitted && errorControl.newpassword.errors?.minlength\"\n  >\n    Mininum Lenght of Password is {{errorControl.newpassword.errors?.minlength.requiredLength}}\n  </span>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">Confirm Password </ion-label>\n      <ion-grid>\n        <ion-row>\n          <ion-col class=\"ion-align-self-start\">\n            <ion-input\n            maxlength=\"12\"\n            formControlName=\"confirmPassword\"\n            [type]=\"showConfirmPassword ? 'text' : 'password'\" \n            required\n          ></ion-input>\n          </ion-col>\n          <ion-col class=\"end\">\n            <ion-icon name=\"eye-off-outline\" class=\"end\" *ngIf=\"!showConfirmPassword\" (click) = \"revealConfirmPassword()\"></ion-icon>\n            <ion-icon name=\"eye-outline\" class=\"end\" *ngIf=\"showConfirmPassword\" (click) = \"revealConfirmPassword()\"></ion-icon>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n    <span\n      class=\"error ion-padding size\"\n      *ngIf=\"isSubmitted && errorControl.confirmPassword.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <span\n      class=\"error ion-padding size\"\n      *ngIf=\"isSubmitted && (errorControl.confirmPassword.value != errorControl.newpassword.value)\"\n    >\n      Password doesn't Match\n    </span>\n    \n    <ion-row>\n      <ion-col>\n        <ion-button type=\"submit\" color=\"danger\" expand=\"block\" \n          >Update Password</ion-button\n        >\n      </ion-col>\n    </ion-row>\n  </form>\n</ion-content>\n\n\n";
 
 /***/ })
 

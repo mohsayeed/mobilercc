@@ -91,14 +91,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "OrderPage": () => (/* binding */ OrderPage)
 /* harmony export */ });
-/* harmony import */ var D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 4929);
 /* harmony import */ var _order_page_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./order.page.html?ngResource */ 613);
 /* harmony import */ var _order_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./order.page.scss?ngResource */ 9279);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 4666);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ 3819);
-/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/auth.service */ 7556);
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-toastr */ 4817);
+/* harmony import */ var _services_dailyrates_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/dailyrates.service */ 595);
 /* harmony import */ var _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/orders/orders.service */ 4242);
 
 
@@ -109,12 +110,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 let OrderPage = class OrderPage {
-  constructor(alertController, authService, orderService, datePipe) {
+  constructor(alertController, orderService, datePipe, toastr, dailyRatesService) {
     this.alertController = alertController;
-    this.authService = authService;
     this.orderService = orderService;
     this.datePipe = datePipe;
+    this.toastr = toastr;
+    this.dailyRatesService = dailyRatesService;
     this.today = new Date();
   }
 
@@ -125,11 +128,14 @@ let OrderPage = class OrderPage {
       this.isOrderPresent = result.isOrderPresent;
 
       if (this.isOrderPresent == false) {
+        this.toastr.success('Order the Cages Right Now ... :))');
         this.orders = 0;
         this.submittButtonTxt = 'Please Order Now !!';
+        this.isDisable();
       } else {
         this.orders = result.order.orderCages;
         this.submittButtonTxt = 'Update Order';
+        this.isDisable();
       }
     });
   }
@@ -137,7 +143,7 @@ let OrderPage = class OrderPage {
   presentAlert() {
     var _this = this;
 
-    return (0,D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const alert = yield _this.alertController.create({
         header: 'Are You Sure Want to Order ' + _this.orders + ' Cages ?',
         buttons: [{
@@ -157,9 +163,11 @@ let OrderPage = class OrderPage {
             };
 
             _this.orderService.enterOrder(_this.userId, data, _this.datePipe.transform(_this.today, 'yyyy-MM-dd')).pipe().subscribe(result => {
-              console.log(result);
+              _this.submittButtonTxt = 'Update Order';
+
+              _this.toastr.success('Your Order has Successfully Placed');
             }, error => {
-              console.log(error);
+              _this.toastr.error('Please Retry After Some Time');
             });
           }
         }]
@@ -168,19 +176,51 @@ let OrderPage = class OrderPage {
     })();
   }
 
+  isDisable() {
+    this.dailyRatesService.getLatestRates().pipe().subscribe(response => {
+      let data = response;
+      let today = new Date();
+      let hour = today.getHours();
+      let min = today.getMinutes(); // let givenHour = 17
+      // let givenMin = 30
+
+      this.cutOffTime = data.cutOffTime;
+      let splitted = data.cutOffTime.split(":");
+      let givenHour = splitted[0];
+      let givenMin = splitted[1];
+      console.log(hour.toString(), min.toString(), givenHour, givenMin);
+
+      if (hour < givenHour) {
+        this.isDisableButton = false;
+      } else {
+        if (hour == givenHour) {
+          if (min <= givenMin) {
+            this.isDisableButton = false;
+          } else {
+            this.isDisableButton = true;
+          }
+        } else {
+          this.isDisableButton = true;
+        }
+      }
+    });
+  }
+
 };
 
 OrderPage.ctorParameters = () => [{
   type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.AlertController
 }, {
-  type: _services_auth_service__WEBPACK_IMPORTED_MODULE_3__.AuthService
-}, {
   type: _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_4__.OrdersService
 }, {
   type: _angular_common__WEBPACK_IMPORTED_MODULE_6__.DatePipe
+}, {
+  type: ngx_toastr__WEBPACK_IMPORTED_MODULE_7__.ToastrService
+}, {
+  type: _services_dailyrates_service__WEBPACK_IMPORTED_MODULE_3__.DailyratesService
 }];
 
-OrderPage = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+OrderPage = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
   selector: 'app-order',
   template: _order_page_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   providers: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.DatePipe],
@@ -298,7 +338,7 @@ let RatesPage = class RatesPage {
             "liveRate": 200,
             "skinlessRate": 200,
             "withSkinRate": 200,
-            "cutOffTime": "17:30:00"
+            "cutOffTime": "000"
         };
     }
     ngOnInit() {
@@ -321,6 +361,167 @@ RatesPage = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
         styles: [_rates_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__]
     })
 ], RatesPage);
+
+
+
+/***/ }),
+
+/***/ 9021:
+/*!***************************************************!*\
+  !*** ./src/app/reports/reports-routing.module.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ReportsPageRoutingModule": () => (/* binding */ ReportsPageRoutingModule)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _reports_page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reports.page */ 8327);
+
+
+
+
+const routes = [
+    {
+        path: '',
+        component: _reports_page__WEBPACK_IMPORTED_MODULE_0__.ReportsPage
+    }
+];
+let ReportsPageRoutingModule = class ReportsPageRoutingModule {
+};
+ReportsPageRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.NgModule)({
+        imports: [_angular_router__WEBPACK_IMPORTED_MODULE_3__.RouterModule.forChild(routes)],
+        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_3__.RouterModule],
+    })
+], ReportsPageRoutingModule);
+
+
+
+/***/ }),
+
+/***/ 3065:
+/*!*******************************************!*\
+  !*** ./src/app/reports/reports.module.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ReportsPageModule": () => (/* binding */ ReportsPageModule)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 4666);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ 2508);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ 3819);
+/* harmony import */ var _reports_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reports-routing.module */ 9021);
+/* harmony import */ var _reports_page__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reports.page */ 8327);
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ 1208);
+
+
+
+
+
+
+
+
+let ReportsPageModule = class ReportsPageModule {
+};
+ReportsPageModule = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.NgModule)({
+        imports: [
+            _angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule,
+            _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule,
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.IonicModule,
+            _reports_routing_module__WEBPACK_IMPORTED_MODULE_0__.ReportsPageRoutingModule,
+            ng2_charts__WEBPACK_IMPORTED_MODULE_7__.NgChartsModule
+        ],
+        declarations: [_reports_page__WEBPACK_IMPORTED_MODULE_1__.ReportsPage],
+        exports: [_reports_page__WEBPACK_IMPORTED_MODULE_1__.ReportsPage]
+    })
+], ReportsPageModule);
+
+
+
+/***/ }),
+
+/***/ 8327:
+/*!*****************************************!*\
+  !*** ./src/app/reports/reports.page.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ReportsPage": () => (/* binding */ ReportsPage)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var _reports_page_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reports.page.html?ngResource */ 8479);
+/* harmony import */ var _reports_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reports.page.scss?ngResource */ 3623);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/orders/orders.service */ 4242);
+
+
+
+
+
+let ReportsPage = class ReportsPage {
+    constructor(orderService) {
+        this.orderService = orderService;
+        this.title = 'ng2-charts-demo';
+        this.lineChartOptions = {
+            responsive: true,
+        };
+        this.lineChartLegend = true;
+        this.label_dates = [];
+        this.label_cages = [];
+    }
+    ngOnInit() {
+        let response = JSON.parse(localStorage.getItem('loginUser'));
+        this.userId = (response.userId);
+        this.orderService
+            .getTopTenRecords(this.userId)
+            .pipe()
+            .subscribe((result) => {
+            this.topTenRecords = result;
+            console.log(result);
+            this.convertJsonToArray_labels();
+            this.lineChartData = {
+                labels: this.label_dates,
+                datasets: [
+                    {
+                        data: this.label_cages,
+                        label: 'Series A',
+                        fill: true,
+                        tension: 0.5,
+                        borderColor: 'black',
+                        backgroundColor: 'rgba(255,0,0,0.3)',
+                    },
+                ],
+            };
+        });
+    }
+    convertJsonToArray_labels() {
+        for (var i = 0; i < this.topTenRecords.orders.length; i++) {
+            this.label_dates.push(this.topTenRecords.orders[i].orderDate);
+            this.label_cages.push(this.topTenRecords.orders[i].orderCages);
+        }
+    }
+};
+ReportsPage.ctorParameters = () => [
+    { type: _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_2__.OrdersService }
+];
+ReportsPage = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+        selector: 'app-reports',
+        template: _reports_page_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+        styles: [_reports_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__]
+    })
+], ReportsPage);
 
 
 
@@ -593,7 +794,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "a": () => (/* binding */ attachComponent),
 /* harmony export */   "d": () => (/* binding */ detachComponent)
 /* harmony export */ });
-/* harmony import */ var D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
+/* harmony import */ var D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
 /* harmony import */ var _helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers-4d272360.js */ 9158);
 
 
@@ -603,7 +804,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const attachComponent = /*#__PURE__*/function () {
-  var _ref = (0,D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (delegate, container, component, cssClasses, componentProps, inline) {
+  var _ref = (0,D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (delegate, container, component, cssClasses, componentProps, inline) {
     var _a;
 
     if (delegate) {
@@ -652,7 +853,7 @@ const CoreDelegate = () => {
   let Reference;
 
   const attachViewToDom = /*#__PURE__*/function () {
-    var _ref2 = (0,D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (parentElement, userComponent, userComponentProps = {}, cssClasses = []) {
+    var _ref2 = (0,D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (parentElement, userComponent, userComponentProps = {}, cssClasses = []) {
       var _a, _b;
 
       BaseComponent = parentElement;
@@ -923,7 +1124,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "r": () => (/* binding */ resetContentScrollY),
 /* harmony export */   "s": () => (/* binding */ scrollToTop)
 /* harmony export */ });
-/* harmony import */ var D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
+/* harmony import */ var D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
 /* harmony import */ var _helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers-4d272360.js */ 9158);
 /* harmony import */ var _index_9ac92660_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index-9ac92660.js */ 2141);
 
@@ -960,7 +1161,7 @@ const isIonContent = el => el && el.tagName === ION_CONTENT_TAG_NAME;
 
 
 const getScrollElement = /*#__PURE__*/function () {
-  var _ref = (0,D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (el) {
+  var _ref = (0,D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (el) {
     if (isIonContent(el)) {
       yield new Promise(resolve => (0,_helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__.c)(el, resolve));
       return el.getScrollElement();
@@ -1644,7 +1845,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "h": () => (/* binding */ hostContext),
 /* harmony export */   "o": () => (/* binding */ openURL)
 /* harmony export */ });
-/* harmony import */ var D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
+/* harmony import */ var D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
 
 
 /*!
@@ -1683,7 +1884,7 @@ const getClassMap = classes => {
 const SCHEME = /^[a-z][a-z0-9+\-.]*:/;
 
 const openURL = /*#__PURE__*/function () {
-  var _ref = (0,D_Project_test_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (url, ev, direction, animation) {
+  var _ref = (0,D_Project_RIT_RCC_ionic_uitesting_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (url, ev, direction, animation) {
     if (url != null && url[0] !== '#' && !SCHEME.test(url)) {
       const router = document.querySelector('ion-router');
 
@@ -1714,7 +1915,7 @@ const openURL = /*#__PURE__*/function () {
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = ".bounce {\n  animation: bounce 0.5s;\n  animation-direction: alternate;\n  animation-timing-function: cubic-bezier(0.5, 0.05, 1, 0.5);\n  animation-iteration-count: infinite;\n}\n\n@keyframes bounce {\n  from {\n    transform: translate3d(0, 0, 0);\n  }\n  to {\n    transform: translate3d(0, 20px, 0);\n  }\n}\n\n.margin-12 {\n  margin-top: 12px;\n}\n\nion-content {\n  font-family: Nunito !important;\n  font-size: 1.3em;\n  color: black;\n  font-weight: bolder;\n}\n\n.font {\n  font-family: Nunito !important;\n  font-size: 0.8em;\n  color: black;\n  font-weight: bolder;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm9yZGVyLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLHNCQUFBO0VBQ0YsOEJBQUE7RUFDQSwwREFBQTtFQUNBLG1DQUFBO0FBQ0Y7O0FBRUE7RUFDSTtJQUFPLCtCQUFBO0VBRVQ7RUFERTtJQUFPLGtDQUFBO0VBSVQ7QUFDRjs7QUFGRTtFQUNFLGdCQUFBO0FBSUo7O0FBREU7RUFDRSw4QkFBQTtFQUNBLGdCQUFBO0VBQ0EsWUFBQTtFQUNBLG1CQUFBO0FBSUo7O0FBREE7RUFDRSw4QkFBQTtFQUNBLGdCQUFBO0VBQ0EsWUFBQTtFQUNBLG1CQUFBO0FBSUYiLCJmaWxlIjoib3JkZXIucGFnZS5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmJvdW5jZXtcclxuICAgIGFuaW1hdGlvbjogYm91bmNlIDAuNXM7XHJcbiAgYW5pbWF0aW9uLWRpcmVjdGlvbjogYWx0ZXJuYXRlO1xyXG4gIGFuaW1hdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllciguNSwwLjA1LDEsLjUpO1xyXG4gIGFuaW1hdGlvbi1pdGVyYXRpb24tY291bnQ6IGluZmluaXRlO1xyXG59XHJcblxyXG5Aa2V5ZnJhbWVzIGJvdW5jZSB7XHJcbiAgICBmcm9tIHsgdHJhbnNmb3JtOiB0cmFuc2xhdGUzZCgwLCAwLCAwKTsgICAgIH1cclxuICAgIHRvICAgeyB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDIwcHgsIDApOyB9XHJcbiAgfVxyXG5cclxuICAubWFyZ2luLTEye1xyXG4gICAgbWFyZ2luLXRvcDogMTJweDtcclxuICB9XHJcblxyXG4gIGlvbi1jb250ZW50e1xyXG4gICAgZm9udC1mYW1pbHk6TnVuaXRvICFpbXBvcnRhbnQ7XHJcbiAgICBmb250LXNpemU6MS4zZW07XHJcbiAgICBjb2xvcjogYmxhY2s7XHJcbiAgICBmb250LXdlaWdodDpib2xkZXI7XHJcbn1cclxuXHJcbi5mb250e1xyXG4gIGZvbnQtZmFtaWx5Ok51bml0byAhaW1wb3J0YW50O1xyXG4gIGZvbnQtc2l6ZTowLjhlbTtcclxuICBjb2xvcjogYmxhY2s7XHJcbiAgZm9udC13ZWlnaHQ6Ym9sZGVyO1xyXG59Il19 */";
+module.exports = ".bounce {\n  animation: bounce 0.5s;\n  animation-direction: alternate;\n  animation-timing-function: cubic-bezier(0.5, 0.05, 1, 0.5);\n  animation-iteration-count: infinite;\n}\n\n@keyframes bounce {\n  from {\n    transform: translate3d(0, 0, 0);\n  }\n  to {\n    transform: translate3d(0, 20px, 0);\n  }\n}\n\n.font {\n  font-family: Nunito !important;\n  font-size: 0.8em;\n  color: black;\n  font-weight: bolder;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm9yZGVyLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLHNCQUFBO0VBQ0YsOEJBQUE7RUFDQSwwREFBQTtFQUNBLG1DQUFBO0FBQ0Y7O0FBRUE7RUFDSTtJQUFPLCtCQUFBO0VBRVQ7RUFERTtJQUFPLGtDQUFBO0VBSVQ7QUFDRjs7QUFEQTtFQUNFLDhCQUFBO0VBQ0EsZ0JBQUE7RUFDQSxZQUFBO0VBQ0EsbUJBQUE7QUFHRiIsImZpbGUiOiJvcmRlci5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuYm91bmNle1xyXG4gICAgYW5pbWF0aW9uOiBib3VuY2UgMC41cztcclxuICBhbmltYXRpb24tZGlyZWN0aW9uOiBhbHRlcm5hdGU7XHJcbiAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogY3ViaWMtYmV6aWVyKC41LDAuMDUsMSwuNSk7XHJcbiAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7XHJcbn1cclxuXHJcbkBrZXlmcmFtZXMgYm91bmNlIHtcclxuICAgIGZyb20geyB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOyAgICAgfVxyXG4gICAgdG8gICB7IHRyYW5zZm9ybTogdHJhbnNsYXRlM2QoMCwgMjBweCwgMCk7IH1cclxuICB9XHJcblxyXG5cclxuLmZvbnR7XHJcbiAgZm9udC1mYW1pbHk6TnVuaXRvICFpbXBvcnRhbnQ7XHJcbiAgZm9udC1zaXplOjAuOGVtO1xyXG4gIGNvbG9yOiBibGFjaztcclxuICBmb250LXdlaWdodDpib2xkZXI7XHJcbn1cclxuXHJcbiJdfQ== */";
 
 /***/ }),
 
@@ -1728,13 +1929,23 @@ module.exports = ".size {\n  height: 50px;\n}\n\n.title {\n  font-family: Nunito
 
 /***/ }),
 
+/***/ 3623:
+/*!******************************************************!*\
+  !*** ./src/app/reports/reports.page.scss?ngResource ***!
+  \******************************************************/
+/***/ ((module) => {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJyZXBvcnRzLnBhZ2Uuc2NzcyJ9 */";
+
+/***/ }),
+
 /***/ 613:
 /*!**************************************************!*\
   !*** ./src/app/order/order.page.html?ngResource ***!
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = "<ion-content fullscreen>\n  <ion-grid>\n    <ion-row>\n      <ion-col> </ion-col> \n      <ion-col> </ion-col> \n      <ion-col style=\"text-align-last: right;\"> <ion-badge  color=\"danger\" class=\"font\">{{today | date:'fullDate'}}</ion-badge></ion-col>\n    </ion-row>\n  </ion-grid>\n  <ion-img src=\"../../assets/icon/chicken-order.png\" class=\"bounce\"> </ion-img>\n  <ion-grid>\n    <ion-row>\n      <ion-col> </ion-col>\n      <ion-col>\n        <ion-input\n          class=\"ion-text-center\"\n          type=\"number\"\n          [(ngModel)]=\"orders\"\n          autofocus=\"true\"\n          style=\"background-color: azure; border-radius: 20px\"\n        ></ion-input>\n      </ion-col>\n      <ion-col> </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col class=\"ion-text-center\">\n        <ion-button  (click)=\"presentAlert()\" type=\"submit\" color=\"danger\" class=\"ion-margin-top\"\n          >{{submittButtonTxt}}</ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-content>\n";
+module.exports = "  <ion-grid>\n    <ion-row>\n      <ion-col> </ion-col> \n      <ion-col> </ion-col> \n      <ion-col style=\"text-align-last: right;\"> <ion-badge  color=\"danger\" class=\"font\">{{today | date:'fullDate'}}</ion-badge></ion-col>\n    </ion-row>\n  <ion-row>\n    <ion-col> </ion-col> \n    <ion-col>   <ion-img src=\"../../assets/icon/chicken-order.png\" class=\"bounce ion-text-center\" > </ion-img>\n    </ion-col> \n    <ion-col> </ion-col> \n  </ion-row>\n  <ion-row>\n      <ion-col> </ion-col>\n      <ion-col>\n        <ion-input\n          class=\"ion-text-center\"\n          type=\"number\"\n          [(ngModel)]=\"orders\"\n          autofocus=\"true\"\n          style=\"background-color: azure; border-radius: 20px\"\n        ></ion-input>\n      </ion-col>\n      <ion-col> </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col class=\"ion-text-center\">\n        <ion-button  (click)=\"presentAlert()\" type=\"submit\"  class=\"ion-margin-top\" color=\"danger\"  [attr.disabled]=\"isDisableButton?true:null\"\n          >{{submittButtonTxt}}</ion-button>\n      </ion-col>\n    </ion-row>\n    <ion-row>\n\n      <ion-col *ngIf=\"isDisableButton\" class=\"ion-text-center\">\n<ion-chip>\n  <ion-icon name=\"alert-sharp\" color=\"danger\"></ion-icon>\n  <ion-label><b>You Can't Order Beyond {{cutOffTime}}</b></ion-label>\n</ion-chip>\n      </ion-col>\n\n    </ion-row>\n  </ion-grid>\n";
 
 /***/ }),
 
@@ -1744,7 +1955,17 @@ module.exports = "<ion-content fullscreen>\n  <ion-grid>\n    <ion-row>\n      <
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = "\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Chicken with Skin</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.skinlessRate}}\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Skin Less Chicken</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.withSkinRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item class=\"ion-text-center\">\n      <ion-icon name=\"cash-outline\" class=\"size\"></ion-icon>\n      <ion-label  class=\"title ion-text-center\">Current Rate</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.liveRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item>\n      <ion-icon name=\"time-outline\" class=\"size\"></ion-icon>\n      <ion-label class=\"title ion-text-center\">Cut Off Time</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n       {{orders.cutOffTime}} p.m\n    </ion-card-content>\n  </ion-card>\n";
+module.exports = "\n\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Chicken with Skin</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.skinlessRate}}\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Skin Less Chicken</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.withSkinRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item class=\"ion-text-center\">\n      <ion-icon name=\"cash-outline\" class=\"size\"></ion-icon>\n      <ion-label  class=\"title ion-text-center\">Current Rate</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.liveRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item>\n      <ion-icon name=\"time-outline\" class=\"size\"></ion-icon>\n      <ion-label class=\"title ion-text-center\">Cut Off Time</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n       {{orders.cutOffTime}} p.m\n    </ion-card-content>\n  </ion-card>\n";
+
+/***/ }),
+
+/***/ 8479:
+/*!******************************************************!*\
+  !*** ./src/app/reports/reports.page.html?ngResource ***!
+  \******************************************************/
+/***/ ((module) => {
+
+module.exports = "      \n      <div>\n        <canvas baseChart width=\"400px\" height=\"400px\"\n          [type]=\"'line'\"\n          [data]=\"lineChartData\"\n          [options]=\"lineChartOptions\"\n          [legend]=\"lineChartLegend\">\n        </canvas>\n      </div>";
 
 /***/ })
 

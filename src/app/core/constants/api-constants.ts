@@ -13,6 +13,7 @@ export enum AuthEndPoints {
   LATEST_RATES = "TritDailyRates/GetLatestDailyRates",
   ISORDERPRESENT = "TritOrders/isOrderPresent",
   ENTER_ORDER = "TritOrders/enterorder",
-  GET_USERNAME = "TritUsers/"
+  GET_USERNAME = "TritUsers/",
+  GET_TOP_TEN_RECORDS="TritOrders/getLatestTenOrders"
 }
   

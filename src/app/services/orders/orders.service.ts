@@ -19,6 +19,15 @@ export class OrdersService {
     )
   }
 
+  getTopTenRecords(userId:any){
+    return this.httpService.requestCall(
+      ApiMethod.GET,
+      AuthEndPoints.GET_TOP_TEN_RECORDS,
+      {},
+      '?userid='+userId
+    )
+  }
+
   enterOrder(userId:any,data:any,date:any){
     return this.httpService.requestCall(
       ApiMethod.POST,

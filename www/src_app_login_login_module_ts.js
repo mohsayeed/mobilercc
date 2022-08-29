@@ -59,6 +59,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ 3819);
 /* harmony import */ var _login_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./login-routing.module */ 5393);
 /* harmony import */ var _login_page__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login.page */ 6825);
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ 1208);
+
 
 
 
@@ -75,7 +77,8 @@ LoginPageModule = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule,
             _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.IonicModule,
             _login_routing_module__WEBPACK_IMPORTED_MODULE_0__.LoginPageRoutingModule,
-            _angular_forms__WEBPACK_IMPORTED_MODULE_5__.ReactiveFormsModule
+            _angular_forms__WEBPACK_IMPORTED_MODULE_5__.ReactiveFormsModule,
+            ng2_charts__WEBPACK_IMPORTED_MODULE_7__.NgChartsModule
         ],
         declarations: [_login_page__WEBPACK_IMPORTED_MODULE_1__.LoginPage]
     })
@@ -95,13 +98,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "LoginPage": () => (/* binding */ LoginPage)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 4929);
 /* harmony import */ var _login_page_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./login.page.html?ngResource */ 1729);
 /* harmony import */ var _login_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login.page.scss?ngResource */ 7047);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ 2508);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ 2508);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-toastr */ 4817);
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/auth.service */ 7556);
+/* harmony import */ var _services_users_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/users/user.service */ 1554);
+
+
 
 
 
@@ -110,10 +117,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let LoginPage = class LoginPage {
-    constructor(formBuilder, authService, router) {
+    constructor(formBuilder, authService, router, userService, toastr) {
         this.formBuilder = formBuilder;
         this.authService = authService;
         this.router = router;
+        this.userService = userService;
+        this.toastr = toastr;
         this.isSubmitted = false;
         this.errorText = '';
         this.show = false;
@@ -123,12 +132,10 @@ let LoginPage = class LoginPage {
             userid: [
                 '',
                 [
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required,
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.pattern('[0-9]{12}$'),
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.maxLength(12),
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.required,
                 ],
             ],
-            password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required]],
+            password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.required]],
         });
     }
     get errorControl() {
@@ -137,7 +144,6 @@ let LoginPage = class LoginPage {
     submitForm() {
         this.isSubmitted = true;
         if (!this.ionicForm.valid) {
-            console.log('Please provide all the required values!');
             return false;
         }
         else {
@@ -149,32 +155,40 @@ let LoginPage = class LoginPage {
                 .subscribe((result) => {
                 this.show = false;
                 this.errorText = '';
-                console.log(result);
                 this.authService._userInfoSub$.next(result);
                 if (result.passwordReset) {
+                    localStorage.setItem('loginUser', JSON.stringify(result));
                     this.router.navigate(['force-password']);
                 }
                 else {
                     this.authService._userInfoSub$.subscribe((result) => {
                         localStorage.setItem('loginUser', JSON.stringify(result));
+                        this.userService
+                            .getUserName(result.userId)
+                            .pipe()
+                            .subscribe((result) => {
+                            localStorage.setItem('userName', result.userName);
+                            this.router.navigate(['tabs/tab1']);
+                        });
                     });
-                    this.router.navigate(['tabs']);
                 }
             }, (error) => {
                 this.show = true;
                 this.errorText = error.error.message;
-                console.log(this.errorText);
+                this.toastr.error(error.error.message);
             });
         }
     }
 };
 LoginPage.ctorParameters = () => [
-    { type: _angular_forms__WEBPACK_IMPORTED_MODULE_3__.FormBuilder },
+    { type: _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormBuilder },
     { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__.AuthService },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router }
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router },
+    { type: _services_users_user_service__WEBPACK_IMPORTED_MODULE_3__.UserService },
+    { type: ngx_toastr__WEBPACK_IMPORTED_MODULE_6__.ToastrService }
 ];
-LoginPage = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+LoginPage = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
         selector: 'app-login',
         template: _login_page_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
         styles: [_login_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__]
@@ -201,7 +215,7 @@ module.exports = ".size {\n  width: 150px;\n  height: 150px;\n}\n\n.error {\n  f
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title class=\"ion-text-center\">Login</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n  <ion-grid>\n    <ion-row >\n      <ion-col size=\"2\"></ion-col>\n      <ion-col size=\"8\" class=\"margin-btm\">\n        <ion-img src=\"../../assets/logo.png\" ></ion-img>\n      </ion-col>\n      <ion-col size=\"2\"></ion-col>\n    </ion-row>\n  </ion-grid>\n  <form [formGroup]=\"ionicForm\" (ngSubmit)=\"submitForm()\" novalidate>\n    <ion-grid>\n      \n    <ion-item lines=\"full\" style=\"margin-bottom: 5px;\">\n      <ion-label position=\"floating\">User Id</ion-label>\n      <ion-input\n        formControlName=\"userid\"\n        type=\"number\"\n        maxlength=\"13\"\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.userid.errors?.required\"\n    >\n      User Id is required.\n    </span>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.userid.errors?.pattern\"\n    >\n      User Id is of Length 12\n    </span>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">Password </ion-label>\n      <ion-input\n        maxlength=\"10\"\n        formControlName=\"password\"\n        type=\"password\"\n        required\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.password.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <ion-row>\n      <ion-col class=\"ion-text-center\">\n        <ion-button type=\"submit\" color=\"danger\" expand=\"block\" class=\"ion-margin-top\"\n          >Submit</ion-button\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"errorText!=''\">\n      <ion-col class=\"ion-text-center\" >\n        <ion-badge color=\"medium\"class=\"ion-text-center\"> {{errorText}} </ion-badge>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  </form>\n</ion-content>\n";
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title class=\"ion-text-center\">Login</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n  <ion-grid>\n    <ion-row >\n      <ion-col size=\"2\"></ion-col>\n      <ion-col size=\"8\" class=\"margin-btm\">\n        <ion-img src=\"../../assets/logo.png\" ></ion-img>\n      </ion-col>\n      <ion-col size=\"2\"></ion-col>\n    </ion-row>\n  </ion-grid>\n  <form [formGroup]=\"ionicForm\" (ngSubmit)=\"submitForm()\" novalidate>\n    <ion-grid>\n      \n    <ion-item lines=\"full\" style=\"margin-bottom: 5px;\">\n      <ion-label position=\"floating\">User Id</ion-label>\n      <ion-input\n      clearInput \n        formControlName=\"userid\"\n        type=\"number\"\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.userid.errors?.required\"\n    >\n      User Id is required.\n    </span>\n    <ion-item lines=\"full\">\n      <ion-label position=\"floating\">Password </ion-label>\n      <ion-input\n      clearInput \n        maxlength=\"10\"\n        formControlName=\"password\"\n        type=\"password\"\n        required\n      ></ion-input>\n    </ion-item>\n    <span\n      class=\"error ion-padding\"\n      *ngIf=\"isSubmitted && errorControl.password.errors?.required\"\n    >\n      Password is required.\n    </span>\n    <ion-row>\n      <ion-col class=\"ion-text-center\">\n        <ion-button type=\"submit\" color=\"danger\" expand=\"block\" class=\"ion-margin-top\"\n          >Submit</ion-button\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"errorText!=''\">\n      <ion-col class=\"ion-text-center\" >\n        <ion-badge color=\"medium\"class=\"ion-text-center\"> {{errorText}} </ion-badge>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  </form>\n</ion-content>\n";
 
 /***/ })
 
