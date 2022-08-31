@@ -1,5 +1,12 @@
-      
-      <div>
+<ion-refresher slot="fixed" (ionRefresh)="getReports($event)" pullMin="100" pullMax="200">
+  <ion-refresher-content 
+    pullingIcon="arrow-down-outline" 
+    pullingText="Pull to refresh" 
+    refreshingSpinner="crescent"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>  
+      <div style="margin-top: 60px;">
         <canvas baseChart width="400px" height="400px"
           [type]="'line'"
           [data]="lineChartData"

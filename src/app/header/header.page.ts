@@ -12,17 +12,11 @@ export class HeaderPage implements OnInit {
   constructor(private authService:AuthService,private userService:UserService) { }
 
   ngOnInit() {
-    let userId = JSON.parse( localStorage.getItem( 'loginUser' ) ).userId
-    this.userService.getUserName(userId)
-    .pipe()
-    .subscribe(
-      (result)=>{
-        this.userName = result.userName
-      }
-    )
+    this.userName = localStorage.getItem( 'userName' )
   }
 
   logout(){
+    this.userName = null
     this.authService.logout();
   }
 

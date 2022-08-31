@@ -16,6 +16,9 @@ export class RatesPage implements OnInit {
     "cutOffTime": "000"
   }
   ngOnInit() {
+    this.getDailyRates();
+  }
+  getDailyRates(event?:any){
     this.dailyRatesService
       .getLatestRates()
       .pipe()
@@ -23,8 +26,13 @@ export class RatesPage implements OnInit {
         (result) => {
           this.orders = result
           this.dailyRatesService._dailyRatesInfo$.next(result)
+          if (event)
+          event.target.complete();
         },
-        (error) => {}
+        (error) => {
+          if (event)
+          event.target.complete();
+        }
       );
   }
 }

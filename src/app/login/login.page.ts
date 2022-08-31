@@ -64,6 +64,7 @@ export class LoginPage implements OnInit {
                   .pipe()
                   .subscribe((result) => {
                     localStorage.setItem('userName',result.userName)
+                    this.ionicForm.reset();
                     this.router.navigate(['tabs/tab1']);
                   });
               });

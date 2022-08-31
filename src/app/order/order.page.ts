@@ -27,25 +27,34 @@ submittButtonTxt:string;
   userId :number;
   cutOffTime:string
   ngOnInit() {
+   this.getOrdersData();
+  }
+  getOrdersData(event?:any){
     let response = JSON.parse( localStorage.getItem( 'loginUser' ) );
-      this.userId = (response.userId);
-      this.orderService
-      .isOrderTodayPresent(this.userId,this.datePipe.transform(this.today, 'yyyy-MM-dd'))
-      .pipe()
-      .subscribe((result)=>{
-        this.isOrderPresent = result.isOrderPresent;
-        if(this.isOrderPresent==false){
-          this.toastr.success('Order the Cages Right Now ... :))');
-          this.orders = 0
-          this.submittButtonTxt = 'Please Order Now !!'
-          this.isDisable()
-        }
-        else{
-          this.orders = result.order.orderCages
-          this.submittButtonTxt = 'Update Order'
-          this.isDisable()
-        }
-      })
+    this.userId = (response.userId);
+    this.orderService
+    .isOrderTodayPresent(this.userId,this.datePipe.transform(this.today, 'yyyy-MM-dd'))
+    .pipe()
+    .subscribe((result)=>{
+      this.isOrderPresent = result.isOrderPresent;
+      if(this.isOrderPresent==false){
+        this.toastr.success('Order the Cages Right Now ... :))');
+        this.orders = 0
+        this.submittButtonTxt = 'Please Order Now !!'
+        this.isDisable()
+      }
+      else{
+        this.orders = result.order.orderCages
+        this.submittButtonTxt = 'Update Order'
+        this.isDisable()
+      }
+      if (event)
+          event.target.complete();
+    },
+    (error)=>{
+      if (event)
+          event.target.complete();
+    })
   }
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -102,7 +111,6 @@ submittButtonTxt:string;
         let splitted = data.cutOffTime.split(":");
         let givenHour = splitted[0]
         let givenMin = splitted[1]
-        console.log(hour.toString(),min.toString(),givenHour,givenMin)
        
 
         if(hour<givenHour){
