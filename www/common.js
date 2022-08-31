@@ -122,6 +122,10 @@ let OrderPage = class OrderPage {
   }
 
   ngOnInit() {
+    this.getOrdersData();
+  }
+
+  getOrdersData(event) {
     let response = JSON.parse(localStorage.getItem('loginUser'));
     this.userId = response.userId;
     this.orderService.isOrderTodayPresent(this.userId, this.datePipe.transform(this.today, 'yyyy-MM-dd')).pipe().subscribe(result => {
@@ -137,6 +141,10 @@ let OrderPage = class OrderPage {
         this.submittButtonTxt = 'Update Order';
         this.isDisable();
       }
+
+      if (event) event.target.complete();
+    }, error => {
+      if (event) event.target.complete();
     });
   }
 
@@ -188,7 +196,6 @@ let OrderPage = class OrderPage {
       let splitted = data.cutOffTime.split(":");
       let givenHour = splitted[0];
       let givenMin = splitted[1];
-      console.log(hour.toString(), min.toString(), givenHour, givenMin);
 
       if (hour < givenHour) {
         this.isDisableButton = false;
@@ -342,13 +349,21 @@ let RatesPage = class RatesPage {
         };
     }
     ngOnInit() {
+        this.getDailyRates();
+    }
+    getDailyRates(event) {
         this.dailyRatesService
             .getLatestRates()
             .pipe()
             .subscribe((result) => {
             this.orders = result;
             this.dailyRatesService._dailyRatesInfo$.next(result);
-        }, (error) => { });
+            if (event)
+                event.target.complete();
+        }, (error) => {
+            if (event)
+                event.target.complete();
+        });
     }
 };
 RatesPage.ctorParameters = () => [
@@ -459,19 +474,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ReportsPage": () => (/* binding */ ReportsPage)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4929);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 4929);
 /* harmony import */ var _reports_page_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reports.page.html?ngResource */ 8479);
 /* harmony import */ var _reports_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reports.page.scss?ngResource */ 3623);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ 4666);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/orders/orders.service */ 4242);
 
 
 
 
 
+
 let ReportsPage = class ReportsPage {
-    constructor(orderService) {
+    constructor(orderService, datePipe) {
         this.orderService = orderService;
+        this.datePipe = datePipe;
         this.title = 'ng2-charts-demo';
         this.lineChartOptions = {
             responsive: true,
@@ -481,6 +499,10 @@ let ReportsPage = class ReportsPage {
         this.label_cages = [];
     }
     ngOnInit() {
+        console.log("hi");
+        this.getReports();
+    }
+    getReports(event) {
         let response = JSON.parse(localStorage.getItem('loginUser'));
         this.userId = (response.userId);
         this.orderService
@@ -503,22 +525,31 @@ let ReportsPage = class ReportsPage {
                     },
                 ],
             };
+            if (event)
+                event.target.complete();
+        }, (error) => {
+            if (event)
+                event.target.complete();
         });
     }
     convertJsonToArray_labels() {
+        this.label_dates = [];
+        this.label_cages = [];
         for (var i = 0; i < this.topTenRecords.orders.length; i++) {
-            this.label_dates.push(this.topTenRecords.orders[i].orderDate);
+            this.label_dates.push(this.datePipe.transform(this.topTenRecords.orders[i].orderDate, 'MMM-d-Y'));
             this.label_cages.push(this.topTenRecords.orders[i].orderCages);
         }
     }
 };
 ReportsPage.ctorParameters = () => [
-    { type: _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_2__.OrdersService }
+    { type: _services_orders_orders_service__WEBPACK_IMPORTED_MODULE_2__.OrdersService },
+    { type: _angular_common__WEBPACK_IMPORTED_MODULE_3__.DatePipe }
 ];
-ReportsPage = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+ReportsPage = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
         selector: 'app-reports',
         template: _reports_page_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+        providers: [_angular_common__WEBPACK_IMPORTED_MODULE_3__.DatePipe],
         styles: [_reports_page_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__]
     })
 ], ReportsPage);
@@ -1945,7 +1976,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = "  <ion-grid>\n    <ion-row>\n      <ion-col> </ion-col> \n      <ion-col> </ion-col> \n      <ion-col style=\"text-align-last: right;\"> <ion-badge  color=\"danger\" class=\"font\">{{today | date:'fullDate'}}</ion-badge></ion-col>\n    </ion-row>\n  <ion-row>\n    <ion-col> </ion-col> \n    <ion-col>   <ion-img src=\"../../assets/icon/chicken-order.png\" class=\"bounce ion-text-center\" > </ion-img>\n    </ion-col> \n    <ion-col> </ion-col> \n  </ion-row>\n  <ion-row>\n      <ion-col> </ion-col>\n      <ion-col>\n        <ion-input\n          class=\"ion-text-center\"\n          type=\"number\"\n          [(ngModel)]=\"orders\"\n          autofocus=\"true\"\n          style=\"background-color: azure; border-radius: 20px\"\n        ></ion-input>\n      </ion-col>\n      <ion-col> </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col class=\"ion-text-center\">\n        <ion-button  (click)=\"presentAlert()\" type=\"submit\"  class=\"ion-margin-top\" color=\"danger\"  [attr.disabled]=\"isDisableButton?true:null\"\n          >{{submittButtonTxt}}</ion-button>\n      </ion-col>\n    </ion-row>\n    <ion-row>\n\n      <ion-col *ngIf=\"isDisableButton\" class=\"ion-text-center\">\n<ion-chip>\n  <ion-icon name=\"alert-sharp\" color=\"danger\"></ion-icon>\n  <ion-label><b>You Can't Order Beyond {{cutOffTime}}</b></ion-label>\n</ion-chip>\n      </ion-col>\n\n    </ion-row>\n  </ion-grid>\n";
+module.exports = "<ion-refresher slot=\"fixed\" (ionRefresh)=\"getOrdersData($event)\" pullMin=\"100\" pullMax=\"200\">\n  <ion-refresher-content \n    pullingIcon=\"arrow-down-outline\" \n    pullingText=\"Pull to refresh\" \n    refreshingSpinner=\"crescent\"\n    refreshingText=\"Refreshing...\">\n  </ion-refresher-content>\n</ion-refresher>\n  <ion-grid>\n    <ion-row>\n      <ion-col> </ion-col> \n      <ion-col> </ion-col> \n      <ion-col style=\"text-align-last: right;\"> <ion-badge  color=\"danger\" class=\"font\">{{today | date:'fullDate'}}</ion-badge></ion-col>\n    </ion-row>\n  <ion-row>\n    <ion-col> </ion-col> \n    <ion-col>   <ion-img src=\"../../assets/icon/chicken-order.png\" class=\"bounce ion-text-center\" > </ion-img>\n    </ion-col> \n    <ion-col> </ion-col> \n  </ion-row>\n  <ion-row>\n      <ion-col> </ion-col>\n      <ion-col>\n        <ion-input\n          class=\"ion-text-center\"\n          type=\"number\"\n          [(ngModel)]=\"orders\"\n          autofocus=\"true\"\n          style=\"background-color: azure; border-radius: 20px\"\n        ></ion-input>\n      </ion-col>\n      <ion-col> </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col class=\"ion-text-center\">\n        <ion-button  (click)=\"presentAlert()\" type=\"submit\"  class=\"ion-margin-top\" color=\"danger\"  [attr.disabled]=\"isDisableButton?true:null\"\n          >{{submittButtonTxt}}</ion-button>\n      </ion-col>\n    </ion-row>\n    <ion-row>\n\n      <ion-col *ngIf=\"isDisableButton\" class=\"ion-text-center\">\n<ion-chip>\n  <ion-icon name=\"alert-sharp\" color=\"danger\"></ion-icon>\n  <ion-label><b>You Can't Order Beyond {{cutOffTime}}</b></ion-label>\n</ion-chip>\n      </ion-col>\n\n    </ion-row>\n  </ion-grid>\n";
 
 /***/ }),
 
@@ -1955,7 +1986,7 @@ module.exports = "  <ion-grid>\n    <ion-row>\n      <ion-col> </ion-col> \n    
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = "\n\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Chicken with Skin</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.skinlessRate}}\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Skin Less Chicken</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.withSkinRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item class=\"ion-text-center\">\n      <ion-icon name=\"cash-outline\" class=\"size\"></ion-icon>\n      <ion-label  class=\"title ion-text-center\">Current Rate</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.liveRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item>\n      <ion-icon name=\"time-outline\" class=\"size\"></ion-icon>\n      <ion-label class=\"title ion-text-center\">Cut Off Time</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n       {{orders.cutOffTime}} p.m\n    </ion-card-content>\n  </ion-card>\n";
+module.exports = "\n <ion-refresher slot=\"fixed\" (ionRefresh)=\"getDailyRates($event)\" pullMin=\"100\" pullMax=\"200\">\n  <ion-refresher-content \n    pullingIcon=\"arrow-down-outline\" \n    pullingText=\"Pull to refresh\" \n    refreshingSpinner=\"crescent\"\n    refreshingText=\"Refreshing...\">\n  </ion-refresher-content>\n</ion-refresher>\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Chicken with Skin</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.skinlessRate}}\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../../assets/icon/chicken.png\" class=\"size\"></ion-img>\n      <ion-label slot=\"end\" class=\"title\">Skin Less Chicken</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.withSkinRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item class=\"ion-text-center\">\n      <ion-icon name=\"cash-outline\" class=\"size\"></ion-icon>\n      <ion-label  class=\"title ion-text-center\">Current Rate</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n      ₹ {{orders.liveRate}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-item>\n      <ion-icon name=\"time-outline\" class=\"size\"></ion-icon>\n      <ion-label class=\"title ion-text-center\">Cut Off Time</ion-label>\n    </ion-item>\n\n    <ion-card-content class=\"ion-text-center\">\n       {{orders.cutOffTime}} p.m\n    </ion-card-content>\n  </ion-card>\n";
 
 /***/ }),
 
@@ -1965,7 +1996,7 @@ module.exports = "\n\n\n  <ion-card>\n    <ion-item>\n      <ion-img src=\"../..
   \******************************************************/
 /***/ ((module) => {
 
-module.exports = "      \n      <div>\n        <canvas baseChart width=\"400px\" height=\"400px\"\n          [type]=\"'line'\"\n          [data]=\"lineChartData\"\n          [options]=\"lineChartOptions\"\n          [legend]=\"lineChartLegend\">\n        </canvas>\n      </div>";
+module.exports = "<ion-refresher slot=\"fixed\" (ionRefresh)=\"getReports($event)\" pullMin=\"100\" pullMax=\"200\">\n  <ion-refresher-content \n    pullingIcon=\"arrow-down-outline\" \n    pullingText=\"Pull to refresh\" \n    refreshingSpinner=\"crescent\"\n    refreshingText=\"Refreshing...\">\n  </ion-refresher-content>\n</ion-refresher>  \n      <div style=\"margin-top: 60px;\">\n        <canvas baseChart width=\"400px\" height=\"400px\"\n          [type]=\"'line'\"\n          [data]=\"lineChartData\"\n          [options]=\"lineChartOptions\"\n          [legend]=\"lineChartLegend\">\n        </canvas>\n      </div>";
 
 /***/ })
 

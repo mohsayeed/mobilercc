@@ -459,6 +459,8 @@ let AuthService = class AuthService {
     logout() {
         localStorage.removeItem('loginUser');
         localStorage.removeItem('userName');
+        localStorage.clear();
+        window.location.reload();
         this.router.navigate(['/login']);
     }
 };
