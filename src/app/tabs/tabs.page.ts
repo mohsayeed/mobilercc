@@ -1,3 +1,4 @@
+import { UserService } from './../services/users/user.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(public userService: UserService) {}
 }

@@ -8,17 +8,20 @@ import { UserService } from '../services/users/user.service';
   styleUrls: ['./header.page.scss'],
 })
 export class HeaderPage implements OnInit {
-  userName = ''
-  constructor(private authService:AuthService,private userService:UserService) { }
+  userName = '';
+  vendorCode: any;
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.userName = localStorage.getItem( 'userName' )
+    this.userName = localStorage.getItem('userName');
+    this.vendorCode = localStorage.getItem('vendorCode');
   }
 
-  logout(){
-    this.userName = null
+  logout() {
+    this.userName = null;
     this.authService.logout();
   }
-
-  
 }

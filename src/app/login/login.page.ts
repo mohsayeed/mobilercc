@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +20,7 @@ export class LoginPage implements OnInit {
     public formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private userService:UserService,
+    private userService: UserService,
     private toastr: ToastrService
   ) {}
   ngOnInit() {
@@ -34,6 +35,7 @@ export class LoginPage implements OnInit {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   get errorControl() {
     return this.ionicForm.controls;
   }
@@ -42,8 +44,8 @@ export class LoginPage implements OnInit {
     if (!this.ionicForm.valid) {
       return false;
     } else {
-      let userid = this.ionicForm.value.userid;
-      let password = this.ionicForm.value.password;
+      const userid = this.ionicForm.value.userid;
+      const password = this.ionicForm.value.password;
 
       this.authService
         .authenticateUser(userid, password)
@@ -52,18 +54,22 @@ export class LoginPage implements OnInit {
           (result: any) => {
             this.show = false;
             this.errorText = '';
+            // eslint-disable-next-line no-underscore-dangle
             this.authService._userInfoSub$.next(result);
             if (result.passwordReset) {
               localStorage.setItem('loginUser', JSON.stringify(result));
               this.router.navigate(['force-password']);
             } else {
-              this.authService._userInfoSub$.subscribe((result) => {
-                localStorage.setItem('loginUser', JSON.stringify(result));
+              this.authService._userInfoSub$.subscribe((result1) => {
+
+                localStorage.setItem('loginUser', JSON.stringify(result1));
                 this.userService
-                  .getUserName(result.userId)
+                  .getUserName(result1.userId)
                   .pipe()
-                  .subscribe((result) => {
-                    localStorage.setItem('userName',result.userName)
+                  .subscribe((result2) => {
+                    console.log(result2);
+                    localStorage.setItem('userName',result2.userName);
+                  localStorage.setItem('vendorCode', result2.vendorCode);
                     this.ionicForm.reset();
                     this.router.navigate(['tabs/tab1']);
                   });

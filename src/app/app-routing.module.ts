@@ -44,12 +44,11 @@ const routes: Routes = [
     path: 'order',
     loadChildren: () => import('./order/order.module').then( m => m.OrderPageModule),
     canActivate:[AuthGuardGuard]
-  },  {
+  },
+  {
     path: 'reports',
     loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
   },
-
-
 
 ];
 @NgModule({

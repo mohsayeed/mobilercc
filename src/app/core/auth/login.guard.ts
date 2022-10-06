@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginGuard implements CanActivate {
-  constructor(private router :Router){}
+  constructor(private router: Router){}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -15,12 +15,12 @@ export class LoginGuard implements CanActivate {
     return false;
    }
    else{
-    return true
+    return true;
    }
   }
-  
+
 
   loggedIn(){
-    return !!localStorage.getItem('loginUser')
+    return !!localStorage.getItem('loginUser');
   }
 }
