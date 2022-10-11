@@ -1,4 +1,4 @@
-<ion-refresher slot="fixed" (ionRefresh)="getOrdersData($event)" pullMin="100" pullMax="200">
+<ion-refresher slot="fixed" (ionRefresh)="ionRefresher($event)" pullMin="100" pullMax="200">
   <ion-refresher-content 
     pullingIcon="arrow-down-outline" 
     pullingText="Pull to refresh" 
@@ -6,7 +6,7 @@
     refreshingText="Refreshing...">
   </ion-refresher-content>
 </ion-refresher>
-  <ion-grid>
+  <ion-grid [hidden]="!userService.isVisibleForCustomers()">
     <ion-row>
       <ion-col> </ion-col> 
       <ion-col> </ion-col> 
@@ -48,7 +48,7 @@
 
     </ion-row>
   </ion-grid>
-  <ion-grid class="ion-margin" style="padding-bottom: 3rem;">
+  <ion-grid class="ion-margin" style="padding-bottom: 3rem;" [hidden]="userService.isVisibleForCustomers()">
     <ion-row >
       <ion-col>
         <ion-item button="true" id="open-date-input">

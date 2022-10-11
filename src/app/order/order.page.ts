@@ -6,6 +6,7 @@ import { DailyratesService } from '../services/dailyrates.service';
 import { OrdersService } from '../services/orders/orders.service';
 import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Observable } from 'rxjs';
+import { UserService } from '../services/users/user.service';
 
 @Component({
   selector: 'app-order',
@@ -30,14 +31,19 @@ export class OrderPage implements OnInit {
     private orderService: OrdersService,
     public datePipe: DatePipe,
     private toastr: ToastrService,
-    private dailyRatesService: DailyratesService) { }
+    private dailyRatesService: DailyratesService,
+    public userService:UserService
+    ) { }
   orders: number
   userId: number;
   totalNoOfCages:any;
   cutOffTime: string;
   date: any
   ngOnInit() {
-    this.getOrdersData();
+    if (this.userService.isVisibleForCustomers()) {
+      this.getOrdersData()
+    }
+    else{
     this.configuration = { ...DefaultConfig };
     this.columns = [
       { key: 'useR_NAME', title: 'User Name' },
@@ -45,6 +51,7 @@ export class OrderPage implements OnInit {
     ];
     this.date = this.datePipe.transform(this.today, 'yyyy-MM-dd')
     this.getAllUsersDataByDate(this.date);
+    }
   }
   getOrdersData(event?: any) {
     let response = JSON.parse(localStorage.getItem('loginUser'));
@@ -160,7 +167,6 @@ export class OrderPage implements OnInit {
     this.data$ = this.orderService.getOrdersListByDate(this.datePipe.transform(date, 'yyyy-MM-dd'))
     this.totalNoOfCages = this.data$.subscribe((result) => {
       this.totalNoOfCages = result.map((_) => _.ordeR_CAGES).reduce((acc, cur) => cur + acc, 0);
-      console.log(this.totalNoOfCages)
     })
   }
   onChange(event: Event): void {
@@ -168,6 +174,18 @@ export class OrderPage implements OnInit {
       type: API.onGlobalSearch,
       value: (event.target as HTMLInputElement).value,
     });
+  }
+
+  ionRefresher(event?:any){
+    if (this.userService.isVisibleForCustomers()){
+      this.getOrdersData()
+    }
+    else{
+      this.date = this.datePipe.transform(this.today, 'yyyy-MM-dd')
+      this.getAllUsersDataByDate(this.date);
+    }
+    if (event)
+      event.target.complete();
   }
 
 }

@@ -26,8 +26,6 @@ export class ReportsPage implements OnInit {
   label_dates:any = []
   label_cages:any = []
   ngOnInit() {
-    console.log("hi")
-
     this.getReports();
   }
   getReports(event?:any){
@@ -38,7 +36,6 @@ export class ReportsPage implements OnInit {
       .pipe()
       .subscribe((result)=>{
         this.topTenRecords=result 
-        console.log(result)
         this.convertJsonToArray_labels()
         this.lineChartData =  {
           labels: this.label_dates,

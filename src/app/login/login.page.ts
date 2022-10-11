@@ -67,7 +67,6 @@ export class LoginPage implements OnInit {
                   .getUserName(result1.userId)
                   .pipe()
                   .subscribe((result2) => {
-                    console.log(result2);
                     localStorage.setItem('userName',result2.userName);
                   localStorage.setItem('vendorCode', result2.vendorCode);
                     this.ionicForm.reset();

@@ -38,16 +38,19 @@ export class RatesPage implements OnInit {
   userNames: any;
   ngOnInit() {
     this.getDailyRates();
-    this.ionicForm = this.formBuilder.group({
-      wholesaleRate: [null],
-      normalChicken: [null],
-      skinlessChicken: [null],
-      cutOffTime: [null]
-    })
-    this.getAllUserNamesAndIds()
-    this.addCagesForCustomer = this.formBuilder.group({
-      username: [null]
-    })
+    if (!this.userService.isVisibleForCustomers()){
+      this.ionicForm = this.formBuilder.group({
+        wholesaleRate: [null],
+        normalChicken: [null],
+        skinlessChicken: [null],
+        cutOffTime: [null]
+      })
+      this.getAllUserNamesAndIds()
+      this.addCagesForCustomer = this.formBuilder.group({
+        username: [null]
+      })
+    }
+   
 
   }
   getAllUserNamesAndIds() {
@@ -55,7 +58,6 @@ export class RatesPage implements OnInit {
       pipe().
       subscribe(
         (result) => {
-          console.log(result)
           result.sort((a, b) => 0 - (a.userName > b.userName ? -1 : 1));
           this.userNames = result
         },
@@ -99,7 +101,6 @@ export class RatesPage implements OnInit {
   submitForm() {
     this.isSubmittedIonicForm = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!')
       return false;
     } else {
       let latest_rates = {
@@ -113,7 +114,6 @@ export class RatesPage implements OnInit {
         "updatedDt": new Date(),
       }
       this.dailyRatesService.updateLatestRates(latest_rates)
-      console.log(this.ionicForm.value)
 
 
       this.dailyRatesService.updateLatestRates(latest_rates)
@@ -124,7 +124,6 @@ export class RatesPage implements OnInit {
             this.orders = latest_rates
           },
           (error) => {
-            console.log(error)
             this.toastr.error('Please Retry After Some Time');
           }
         )
@@ -133,7 +132,6 @@ export class RatesPage implements OnInit {
   submitFormaddCages() {
     this.isSubmittedaddCages = true;
     if (!this.addCagesForCustomer.valid) {
-      console.log('Please provide all the required values!')
       return false;
     } else {
 
@@ -141,7 +139,6 @@ export class RatesPage implements OnInit {
   }
   customerChange(event?: any) {
     this.currentSelectedUser = (event.value)
-    console.log(this.currentSelectedUser)
   }
   cancel() {
     this.modal.dismiss(null, 'cancel');
@@ -173,12 +170,22 @@ export class RatesPage implements OnInit {
             this.addCagesForCustomer.patchValue({
               username: null
             });
+            this.noOfCages = null
           },
           (error) => {
             this.toastr.error('Please Retry After Some Time');
           }
         )
     }
+  }
+  ionRefresher(event?: any){
+    this.getDailyRates();
+    if (!this.userService.isVisibleForCustomers()) {
+      this.getAllUserNamesAndIds()
+    }
+   
+    if (event)
+      event.target.complete();
   }
 
 }

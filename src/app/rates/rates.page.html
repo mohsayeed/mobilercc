@@ -47,10 +47,7 @@
   </ion-card>
 </div>
 
-<div style="margin: 0.5rem" class="x">
-  <ion-toolbar class="ion-text-center">
-    <ion-title size="large" color="dark">Daily Rates </ion-title>
-  </ion-toolbar>
+<div style="margin: 0.5rem" class="x" [hidden]="userService.isVisibleForCustomers()">
   <form [formGroup]="ionicForm" (ngSubmit)="submitForm()" novalidate>
     <ion-item>
       <ion-label position="floating">Wholesale Rate</ion-label>
@@ -117,7 +114,7 @@
             <ion-buttons slot="start">
               <ion-button (click)="cancel()">Cancel</ion-button>
             </ion-buttons>
-            <ion-title>Welcome</ion-title>
+            <ion-title>Order Cages</ion-title>
             <ion-buttons slot="end">
               <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
             </ion-buttons>
@@ -126,7 +123,7 @@
         <ion-content class="ion-padding">
           <ion-item>
             <ion-label position="stacked">Number of Cages</ion-label>
-            <ion-input type="number" placeholder="Cages" [(ngModel)]="noOfCages"
+            <ion-input type="number" placeholder="Cages" [(ngModel)]="noOfCages" clearInput="true"
               [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
         </ion-content>
