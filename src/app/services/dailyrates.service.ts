@@ -18,4 +18,11 @@ export class DailyratesService {
       AuthEndPoints.LATEST_RATES,
   );
   }
+  updateLatestRates(latest_rates:any){
+    return this.httpService.requestCall(
+      ApiMethod.POST,
+      AuthEndPoints.UPDATE_RATES,
+      latest_rates
+    )
+  }
 }

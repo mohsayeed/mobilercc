@@ -26,4 +26,10 @@ export class UserService {
       return false;
     }
   }
+  getAllUserNamesIds(){
+    return this.httpService.requestCall(
+      ApiMethod.GET,
+      AuthEndPoints.ALL_USERNAMES_IDS
+    );
+  }
 }

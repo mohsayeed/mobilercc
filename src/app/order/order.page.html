@@ -48,3 +48,37 @@
 
     </ion-row>
   </ion-grid>
+  <ion-grid class="ion-margin" style="padding-bottom: 3rem;">
+    <ion-row >
+      <ion-col>
+        <ion-item button="true" id="open-date-input">
+          <ion-label>Date</ion-label>
+          <ion-text slot="end">{{ date }}</ion-text>
+          <ion-popover trigger="open-date-input" show-backdrop="false">
+            <ng-template>
+              <ion-datetime #popoverDatetime presentation="date" presentation="date" [max]="datePipe.transform(this.today, 'yyyy-MM-dd')" [min]="getLastWeeksDate()"
+              displayFormat="DD.MM.YYYY"
+                (ionChange)="date = datePipe.transform((popoverDatetime.value), 'yyyy-MM-dd'); popoverDatetime.confirm(true);getAllUsersDataByDate(date)"></ion-datetime>
+            </ng-template>
+          </ion-popover>
+        </ion-item>
+
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col >
+        <input clearInput="true" class="form-input" type="text" id="globalSearch" (input)="onChange($event)" placeholder="Search" />
+      </ion-col>
+      <ion-col>
+        <ion-chip color="dark">
+        Cages : {{totalNoOfCages}}
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ngx-table #table  [data]="data$ | async" [configuration]="configuration" [columns]="columns" >
+        </ngx-table>
+      </ion-col>
+    </ion-row>
+  </ion-grid>

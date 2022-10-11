@@ -1,28 +1,24 @@
-
- <ion-refresher slot="fixed" (ionRefresh)="getDailyRates($event)" pullMin="100" pullMax="200">
-  <ion-refresher-content 
-    pullingIcon="arrow-down-outline" 
-    pullingText="Pull to refresh" 
-    refreshingSpinner="crescent"
+<ion-refresher slot="fixed" (ionRefresh)="getDailyRates($event)" pullMin="100" pullMax="200">
+  <ion-refresher-content pullingIcon="arrow-down-outline" pullingText="Pull to refresh" refreshingSpinner="crescent"
     refreshingText="Refreshing...">
   </ion-refresher-content>
 </ion-refresher>
 
+<div [hidden]="!userService.isVisibleForCustomers()">
   <ion-card>
-    <ion-item>
+    <ion-item class="ion-text-center">
       <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
-      <ion-label slot="end" class="title">Chicken with Skin</ion-label>
+      <ion-label class="title ion-text-center">Wholesale Rate Live</ion-label>
     </ion-item>
 
     <ion-card-content class="ion-text-center">
-      ₹ {{orders.skinlessRate}}
+      ₹ {{orders.liveRate}}
     </ion-card-content>
   </ion-card>
-
   <ion-card>
-    <ion-item>
+    <ion-item class="ion-text-center">
       <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
-      <ion-label slot="end" class="title">Skin Less Chicken</ion-label>
+      <ion-label class="title ion-text-center">Normal Chicken</ion-label>
     </ion-item>
 
     <ion-card-content class="ion-text-center">
@@ -32,11 +28,11 @@
   <ion-card>
     <ion-item class="ion-text-center">
       <ion-icon name="cash-outline" class="size"></ion-icon>
-      <ion-label  class="title ion-text-center">Current Rate</ion-label>
+      <ion-label class="title ion-text-center">Skinless chicken</ion-label>
     </ion-item>
 
     <ion-card-content class="ion-text-center">
-      ₹ {{orders.liveRate}}
+      ₹ {{orders.skinlessRate}}
     </ion-card-content>
   </ion-card>
   <ion-card>
@@ -46,6 +42,95 @@
     </ion-item>
 
     <ion-card-content class="ion-text-center">
-       {{orders.cutOffTime}} p.m
+      {{orders.cutOffTime}} p.m
     </ion-card-content>
   </ion-card>
+</div>
+
+<div style="margin: 0.5rem" class="x">
+  <ion-toolbar class="ion-text-center">
+    <ion-title size="large" color="dark">Daily Rates </ion-title>
+  </ion-toolbar>
+  <form [formGroup]="ionicForm" (ngSubmit)="submitForm()" novalidate>
+    <ion-item>
+      <ion-label position="floating">Wholesale Rate</ion-label>
+      <ion-input formControlName="wholesaleRate" type="number"></ion-input>
+    </ion-item>
+    <!-- <span class="error ion-padding" *ngIf="isSubmittedIonicForm && errorControl.wholesaleRate.errors?.required">
+      wholesaleRate is required.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmittedIonicForm && errorControl.name.errors?.minlength">
+      Name should be min 2 chars long.
+    </span> -->
+    <ion-item>
+      <ion-label position="floating">Normal Chicken</ion-label>
+      <ion-input formControlName="normalChicken" type="number"></ion-input>
+    </ion-item>
+    <!-- <span class="error ion-padding" *ngIf="isSubmittedIonicForm && errorControl.email.errors?.required">
+      Email is required.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmittedIonicForm && errorControl.email.errors?.pattern">
+      Please provide valid email id.
+    </span> -->
+
+    <ion-item>
+      <ion-label position="floating">Skin Less Chicken</ion-label>
+      <ion-input formControlName="skinlessChicken" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Cut Off Time</ion-label>
+      <ion-input formControlName="cutOffTime" type="time" step="2"></ion-input>
+    </ion-item>
+    <!-- <span class="error ion-padding" *ngIf="isSubmittedIonicForm && errorControl.mobile.errors?.required">
+      Mobile number is required.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmittedIonicForm && errorControl.mobile.errors?.pattern">
+      Only numerical values allowed.
+    </span> -->
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" expand="block">Update</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+  <ion-toolbar class="ion-text-center">
+    <ion-title size="large" color="dark">Add Cages For Customers</ion-title>
+  </ion-toolbar>
+  <form [formGroup]="addCagesForCustomer" (ngSubmit)="submitFormaddCages()" novalidate>
+    <ion-item>
+      <ion-label>Select Customer</ion-label>
+      <ionic-selectable item-content formControlName="username" itemValueField="userId" itemTextField="userName"
+        [items]="userNames" [hasVirtualScroll]="true" [canSearch]="true" (onChange)="customerChange($event)">
+      </ionic-selectable>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button id="open-modal" expand="block" color="danger">Update Cages</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="cancel()">Cancel</ion-button>
+            </ion-buttons>
+            <ion-title>Welcome</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-item>
+            <ion-label position="stacked">Number of Cages</ion-label>
+            <ion-input type="number" placeholder="Cages" [(ngModel)]="noOfCages"
+              [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-item>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </form>
+</div>

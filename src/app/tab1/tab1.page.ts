@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/users/user.service';
 
 @Component({
@@ -10,5 +9,5 @@ import { UserService } from '../services/users/user.service';
 export class Tab1Page implements OnInit {
   ngOnInit(): void {
   }
-
+constructor(){}
 }

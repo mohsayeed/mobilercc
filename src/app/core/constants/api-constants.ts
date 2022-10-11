@@ -15,5 +15,8 @@ export enum AuthEndPoints {
   ISORDERPRESENT = 'TritOrders/isOrderPresent',
   ENTER_ORDER = 'TritOrders/enterorder',
   GET_USERNAME = 'TritUsers/',
-  GET_TOP_TEN_RECORDS='TritOrders/getLatestTenOrders'
+  GET_TOP_TEN_RECORDS='TritOrders/getLatestTenOrders',
+  UPDATE_RATES = 'TritDailyRates',
+  ALL_USERNAMES_IDS = 'TritUsers/getAllUsers',
+  GET_ALLORDERS_BYDATE = 'TritOrders/getOrderDetailsByDate'
 }

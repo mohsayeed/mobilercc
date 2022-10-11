@@ -38,6 +38,16 @@ export class OrdersService {
     )
   }
 
+  getOrdersListByDate(date: any) {
+    return this.httpService.requestCall(
+      ApiMethod.GET,
+      AuthEndPoints.GET_ALLORDERS_BYDATE,
+      {},
+      '?date=' + date,
+      {}
+    )
+  }
+
 
 
 

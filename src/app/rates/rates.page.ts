@@ -1,24 +1,71 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { IonModal } from '@ionic/angular';
+import { ToastrService } from 'ngx-toastr';
 import { DailyratesService } from '../services/dailyrates.service';
+import { UserService } from '../services/users/user.service';
+import { OverlayEventDetail } from '@ionic/core/components';
+import { OrdersService } from '../services/orders/orders.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-rates',
   templateUrl: './rates.page.html',
   styleUrls: ['./rates.page.scss'],
+  providers: [DatePipe]
 })
 export class RatesPage implements OnInit {
-  constructor(private dailyRatesService: DailyratesService) {}
-  orders: any  = {
+  @ViewChild(IonModal) modal: IonModal;
+  noOfCages: any = null;
+
+
+
+  constructor(private dailyRatesService: DailyratesService,
+    public userService: UserService,
+    public formBuilder: FormBuilder,
+    private toastr: ToastrService,
+    private orderService: OrdersService,
+    private datePipe: DatePipe) { }
+  orders: any = {
     "dailyDate": "2022-07-21T00:00:00",
     "liveRate": 200,
     "skinlessRate": 200,
     "withSkinRate": 200,
     "cutOffTime": "000"
   }
+  today = new Date()
+  currentSelectedUser: any = null;
+  userNames: any;
   ngOnInit() {
     this.getDailyRates();
+    this.ionicForm = this.formBuilder.group({
+      wholesaleRate: [null],
+      normalChicken: [null],
+      skinlessChicken: [null],
+      cutOffTime: [null]
+    })
+    this.getAllUserNamesAndIds()
+    this.addCagesForCustomer = this.formBuilder.group({
+      username: [null]
+    })
+
   }
-  getDailyRates(event?:any){
+  getAllUserNamesAndIds() {
+    this.userService.getAllUserNamesIds().
+      pipe().
+      subscribe(
+        (result) => {
+          console.log(result)
+          result.sort((a, b) => 0 - (a.userName > b.userName ? -1 : 1));
+          this.userNames = result
+        },
+        (error) => {
+
+        }
+      )
+  }
+
+  getDailyRates(event?: any) {
     this.dailyRatesService
       .getLatestRates()
       .pipe()
@@ -26,13 +73,112 @@ export class RatesPage implements OnInit {
         (result) => {
           this.orders = result
           this.dailyRatesService._dailyRatesInfo$.next(result)
+          this.ionicForm.patchValue({
+            wholesaleRate: this.orders.liveRate,
+            normalChicken: this.orders.withSkinRate,
+            skinlessChicken: this.orders.skinlessRate,
+            cutOffTime: this.orders.cutOffTime
+          });
           if (event)
-          event.target.complete();
+            event.target.complete();
         },
         (error) => {
           if (event)
-          event.target.complete();
+            event.target.complete();
         }
       );
   }
+  ionicForm: FormGroup;
+  addCagesForCustomer: FormGroup
+  isSubmittedaddCages = false;
+  isSubmittedIonicForm = false;
+
+  get errorControl() {
+    return this.ionicForm.controls;
+  }
+  submitForm() {
+    this.isSubmittedIonicForm = true;
+    if (!this.ionicForm.valid) {
+      console.log('Please provide all the required values!')
+      return false;
+    } else {
+      let latest_rates = {
+        "dailyRateId": 0,
+        "dailyDate": new Date(),
+        "liveRate": this.ionicForm.value.wholesaleRate,
+        "skinlessRate": this.ionicForm.value.normalChicken,
+        "withSkinRate": this.ionicForm.value.skinlessChicken,
+        "cutOffTime": this.ionicForm.value.cutOffTime,
+        "updatedBy": 1,
+        "updatedDt": new Date(),
+      }
+      this.dailyRatesService.updateLatestRates(latest_rates)
+      console.log(this.ionicForm.value)
+
+
+      this.dailyRatesService.updateLatestRates(latest_rates)
+        .pipe()
+        .subscribe(
+          (result) => {
+            this.toastr.success('Rates Updated Successfully');
+            this.orders = latest_rates
+          },
+          (error) => {
+            console.log(error)
+            this.toastr.error('Please Retry After Some Time');
+          }
+        )
+    }
+  }
+  submitFormaddCages() {
+    this.isSubmittedaddCages = true;
+    if (!this.addCagesForCustomer.valid) {
+      console.log('Please provide all the required values!')
+      return false;
+    } else {
+
+    }
+  }
+  customerChange(event?: any) {
+    this.currentSelectedUser = (event.value)
+    console.log(this.currentSelectedUser)
+  }
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirm() {
+    this.modal.dismiss(this.noOfCages, 'confirm');
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    if (ev.detail.role === 'confirm') {
+      let data =
+      {
+        "orderId": 0,
+        "userId": this.currentSelectedUser.userId,
+        "orderDate": this.datePipe.transform(this.today, 'yyyy-MM-dd'),
+        "orderCages": ev.detail.data,
+        "updatedBy": 1,
+        "updatedDt": this.today
+      }
+
+      this.orderService
+        .enterOrder(this.currentSelectedUser.userId, data, this.datePipe.transform(this.today, 'yyyy-MM-dd'))
+        .pipe()
+        .subscribe(
+          (result) => {
+            this.toastr.success('Your Order has Successfully Placed');
+            this.addCagesForCustomer.patchValue({
+              username: null
+            });
+          },
+          (error) => {
+            this.toastr.error('Please Retry After Some Time');
+          }
+        )
+    }
+  }
+
 }

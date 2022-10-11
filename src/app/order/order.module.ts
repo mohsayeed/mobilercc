@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { OrderPageRoutingModule } from './order-routing.module';
 
 import { OrderPage } from './order.page';
+import { TableModule } from 'ngx-easy-table';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    OrderPageRoutingModule
+    OrderPageRoutingModule,
+    TableModule
   ],
   declarations: [OrderPage],
   exports:[OrderPage]
