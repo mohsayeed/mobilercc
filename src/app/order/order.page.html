@@ -27,6 +27,7 @@
           [(ngModel)]="orders"
           autofocus="true"
           style="background-color: azure; border-radius: 20px"
+           [attr.disabled]="isDisableButton?true:null"
         ></ion-input>
       </ion-col>
       <ion-col> </ion-col>

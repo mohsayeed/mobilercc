@@ -1,7 +1,7 @@
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TabsPageRoutingModule } from './tabs-routing.module';
 
@@ -14,7 +14,8 @@ import { HeaderPageModule } from '../header/header.module';
     CommonModule,
     FormsModule,
     TabsPageRoutingModule,
-    HeaderPageModule
+    HeaderPageModule,
+    ReactiveFormsModule
   ],
   declarations: [TabsPage]
 })

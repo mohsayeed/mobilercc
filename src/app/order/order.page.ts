@@ -40,15 +40,15 @@ export class OrderPage implements OnInit {
   cutOffTime: string;
   date: any
   ngOnInit() {
-    if (this.userService.isVisibleForCustomers()) {
-      this.getOrdersData()
-    }
-    else{
     this.configuration = { ...DefaultConfig };
     this.columns = [
       { key: 'useR_NAME', title: 'User Name' },
       { key: 'ordeR_CAGES', title: 'Order Cages' }
     ];
+    if (this.userService.isVisibleForCustomers()) {
+      this.getOrdersData()
+    }
+    else{
     this.date = this.datePipe.transform(this.today, 'yyyy-MM-dd')
     this.getAllUsersDataByDate(this.date);
     }

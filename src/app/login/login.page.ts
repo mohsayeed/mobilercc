@@ -69,7 +69,7 @@ export class LoginPage implements OnInit {
                   .subscribe((result2) => {
                     localStorage.setItem('userName',result2.userName);
                   localStorage.setItem('vendorCode', result2.vendorCode);
-                    this.ionicForm.reset();
+                    // this.ionicForm.reset();
                     this.router.navigate(['tabs/tab1']);
                   });
               });

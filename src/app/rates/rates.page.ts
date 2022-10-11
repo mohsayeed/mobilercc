@@ -38,17 +38,19 @@ export class RatesPage implements OnInit {
   userNames: any;
   ngOnInit() {
     this.getDailyRates();
-    if (!this.userService.isVisibleForCustomers()){
-      this.ionicForm = this.formBuilder.group({
-        wholesaleRate: [null],
-        normalChicken: [null],
-        skinlessChicken: [null],
-        cutOffTime: [null]
-      })
-      this.getAllUserNamesAndIds()
-      this.addCagesForCustomer = this.formBuilder.group({
-        username: [null]
-      })
+    if(this.userService.isVisibleForCustomers){
+      {
+        this.ionicForm = this.formBuilder.group({
+          wholesaleRate: [null],
+          normalChicken: [null],
+          skinlessChicken: [null],
+          cutOffTime: [null]
+        })
+        this.getAllUserNamesAndIds()
+        this.addCagesForCustomer = this.formBuilder.group({
+          username: [null]
+        })
+      }
     }
    
 
