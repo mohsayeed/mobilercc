@@ -1,11 +1,15 @@
 .size{
     height: 50px;
 }
+.font{
+    font: 1em sans-serif;
+    font-weight: 900;
+}
 
 .title{
     font-family:Nunito !important;
     font-size:1em;
-    color: red;
+    color: black;
     font-weight: bolder;
 }
 
@@ -23,4 +27,8 @@ ion-card-content{
 }
 ion-item{
     margin: 0.3rem;
+}
+
+.big-font{
+font-weight: bold;
 }

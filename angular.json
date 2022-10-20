@@ -30,9 +30,15 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss",  "node_modules/ngx-toastr/toastr.css",  "node_modules/ngx-easy-table/style.css"
- ],
-            "scripts": [],
+            "styles": [
+              "src/theme/variables.scss",
+              "src/global.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/ngx-easy-table/style.css"
+            ],
+            "scripts": [
+              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+            ],
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
@@ -97,8 +103,12 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "styles": [ "node_modules/ngx-toastr/toastr.css" ],
-            "scripts": [],
+            "styles": [
+              "node_modules/ngx-toastr/toastr.css"
+            ],
+            "scripts": [
+              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+            ],
             "assets": [
               {
                 "glob": "favicon.ico",
@@ -140,6 +150,30 @@
             },
             "ci": {
               "devServerTarget": "app:serve:ci"
+            }
+          }
+        },
+        "ionic-cordova-serve": {
+          "builder": "@ionic/cordova-builders:cordova-serve",
+          "options": {
+            "cordovaBuildTarget": "app:ionic-cordova-build",
+            "devServerTarget": "app:serve"
+          },
+          "configurations": {
+            "production": {
+              "cordovaBuildTarget": "app:ionic-cordova-build:production",
+              "devServerTarget": "app:serve:production"
+            }
+          }
+        },
+        "ionic-cordova-build": {
+          "builder": "@ionic/cordova-builders:cordova-build",
+          "options": {
+            "browserTarget": "app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "app:build:production"
             }
           }
         }

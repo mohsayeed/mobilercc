@@ -1,85 +1,70 @@
-<ion-refresher slot="fixed" (ionRefresh)="ionRefresher($event)" pullMin="100" pullMax="200">
-  <ion-refresher-content 
-    pullingIcon="arrow-down-outline" 
-    pullingText="Pull to refresh" 
-    refreshingSpinner="crescent"
+<ion-refresher [hidden]="userService.isVisibleForCustomers()" slot="fixed" (ionRefresh)="ionRefresher($event)" pullMin="100" pullMax="200">
+  <ion-refresher-content pullingIcon="arrow-down-outline" pullingText="Pull to refresh" refreshingSpinner="crescent"
     refreshingText="Refreshing...">
   </ion-refresher-content>
 </ion-refresher>
-  <ion-grid [hidden]="!userService.isVisibleForCustomers()">
-    <ion-row>
-      <ion-col> </ion-col> 
-      <ion-col> </ion-col> 
-      <ion-col style="text-align-last: right;"> <ion-badge  color="danger" class="font">{{today | date:'fullDate'}}</ion-badge></ion-col>
-    </ion-row>
+<ion-grid [hidden]="!userService.isVisibleForCustomers()">
   <ion-row>
-    <ion-col> </ion-col> 
-    <ion-col>   <ion-img src="../../assets/icon/chicken-order.png" class="bounce ion-text-center" > </ion-img>
-    </ion-col> 
-    <ion-col> </ion-col> 
+    <ion-col size="6">
+    <ion-item>
+      <ion-label >Number of Cages</ion-label>
+    </ion-item>
+    </ion-col>
+    <ion-col size="4">
+<ion-input autofocus="true" placeholder="No of Cages"  type="number" [(ngModel)]="orders"
+  [attr.disabled]="isDisableButton?true:null"  class="custom ion-text-center"></ion-input>
+    </ion-col>
+    <ion-col size="2">
+      <!-- <ion-button (click)="presentAlert()" type="submit"  color="danger" class="ion-text-center"
+        [attr.disabled]="isDisableButton?true:null">{{submittButtonTxt}}</ion-button> -->
+        <ion-icon name="checkmark-circle-sharp" (click)="presentAlert()" type="submit"  color="danger" class="ion-text-center"
+        [attr.disabled]="isDisableButton?true:null" style="padding: 0px;"></ion-icon>
+    </ion-col>
   </ion-row>
   <ion-row>
-      <ion-col> </ion-col>
-      <ion-col>
-        <ion-input
-          class="ion-text-center"
-          type="number"
-          [(ngModel)]="orders"
-          autofocus="true"
-          style="background-color: azure; border-radius: 20px"
-           [attr.disabled]="isDisableButton?true:null"
-        ></ion-input>
-      </ion-col>
-      <ion-col> </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <ion-button  (click)="presentAlert()" type="submit"  class="ion-margin-top" color="danger"  [attr.disabled]="isDisableButton?true:null"
-          >{{submittButtonTxt}}</ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
+    <ion-col *ngIf="isDisableButton" class="ion-text-center">
+      <ion-chip>
+        <ion-label><b>You Can't Order Beyond {{timeTobeShowntoCustomer|date:'h:mm a'}}</b></ion-label>
+      </ion-chip>
+    </ion-col>
 
-      <ion-col *ngIf="isDisableButton" class="ion-text-center">
-<ion-chip>
-  <ion-icon name="alert-sharp" color="danger"></ion-icon>
-  <ion-label><b>You Can't Order Beyond {{cutOffTime}}</b></ion-label>
-</ion-chip>
-      </ion-col>
-
-    </ion-row>
-  </ion-grid>
-  <ion-grid class="ion-margin" style="padding-bottom: 3rem;" [hidden]="userService.isVisibleForCustomers()">
-    <ion-row >
-      <ion-col>
-        <ion-item button="true" id="open-date-input">
-          <ion-label>Date</ion-label>
-          <ion-text slot="end">{{ date }}</ion-text>
-          <ion-popover trigger="open-date-input" show-backdrop="false">
-            <ng-template>
-              <ion-datetime #popoverDatetime presentation="date" presentation="date" [max]="datePipe.transform(this.today, 'yyyy-MM-dd')" [min]="getLastWeeksDate()"
-              displayFormat="DD.MM.YYYY"
-                (ionChange)="date = datePipe.transform((popoverDatetime.value), 'yyyy-MM-dd'); popoverDatetime.confirm(true);getAllUsersDataByDate(date)"></ion-datetime>
-            </ng-template>
-          </ion-popover>
-        </ion-item>
-
-      </ion-col>
-    </ion-row>
-    <ion-row >
-      <ion-col >
-        <input clearInput="true" class="form-input" type="text" id="globalSearch" (input)="onChange($event)" placeholder="Search" />
-      </ion-col>
-      <ion-col>
-        <ion-chip color="dark">
-        Cages : {{totalNoOfCages}}
-        </ion-chip>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ngx-table #table  [data]="data$ | async" [configuration]="configuration" [columns]="columns" >
-        </ngx-table>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  </ion-row>
+</ion-grid>
+<ion-grid class="ion-margin" style="padding-bottom: 3rem;" [hidden]="userService.isVisibleForCustomers()">
+  <ion-row class="ion-margin">
+    <ion-col>
+        <!-- <ion-label>Date</ion-label> -->
+        <!-- <ion-text slot="end">{{ date }}</ion-text> -->
+        <ion-datetime #popoverDatetime presentation="date" presentation="date" preferWheel ="true"
+          [max]="datePipe.transform(this.today, 'yyyy-MM-dd')" [min]="getLastWeeksDate()" displayFormat="DD.MM.YYYY"
+          (ionChange)="date = datePipe.transform((popoverDatetime.value), 'yyyy-MM-dd'); popoverDatetime.confirm(true);getAllUsersDataByDate(date)">
+        <!-- <ion-popover trigger="open-date-input" show-backdrop="false">
+          <ng-template>
+            
+          </ng-template>
+        </ion-popover> -->
+</ion-datetime>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="6">
+      <input clearInput="true" class="form-input" type="text" id="globalSearch" (input)="onChange($event)"
+        placeholder="Search" />
+    </ion-col>
+    <ion-col size="5" class="label">
+      <ion-label >
+        Cages: {{totalNoOfCages}}
+      </ion-label>
+      <!-- <ion-chip  color="dark">
+      
+      </ion-chip>  -->
+    </ion-col>
+    <ion-col class="label1" size="1"><ion-icon name="document-text-sharp" class="pdf-icon" (click)="createPdf()"></ion-icon></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ngx-table #table [data]="data$ | async" [configuration]="configuration" [columns]="columns">
+      </ngx-table>
+    </ion-col>
+  </ion-row>
+</ion-grid>

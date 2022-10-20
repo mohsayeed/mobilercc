@@ -9,5 +9,5 @@ import { UserService } from '../services/users/user.service';
 export class Tab1Page implements OnInit {
   ngOnInit(): void {
   }
-constructor(){}
+constructor(public userService:UserService){}
 }

@@ -1,53 +1,49 @@
-<ion-refresher slot="fixed" (ionRefresh)="getDailyRates($event)" pullMin="100" pullMax="200">
-  <ion-refresher-content pullingIcon="arrow-down-outline" pullingText="Pull to refresh" refreshingSpinner="crescent"
-    refreshingText="Refreshing...">
+<ion-refresher
+[hidden]="userService.isVisibleForCustomers()"
+  slot="fixed"
+  (ionRefresh)="getDailyRates($event)"
+  pullMin="100"
+  pullMax="200"
+>
+  <ion-refresher-content
+    pullingIcon="arrow-down-outline"
+    pullingText="Pull to refresh"
+    refreshingSpinner="crescent"
+    refreshingText="Refreshing..."
+  >
   </ion-refresher-content>
 </ion-refresher>
 
 <div [hidden]="!userService.isVisibleForCustomers()">
   <ion-card>
-    <ion-item class="ion-text-center">
-      <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
-      <ion-label class="title ion-text-center">Wholesale Rate Live</ion-label>
+    <ion-item class="">
+      <ion-label class="title ">Wholesale Rate Live</ion-label>
+      <ion-label class=" ion-text-center big-font" >₹ {{orders.liveRate}}</ion-label>
     </ion-item>
-
-    <ion-card-content class="ion-text-center">
-      ₹ {{orders.liveRate}}
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-item class="ion-text-center">
-      <ion-img src="../../assets/icon/chicken.png" class="size"></ion-img>
-      <ion-label class="title ion-text-center">Normal Chicken</ion-label>
+    <ion-item class="">
+      <ion-label class="title ">Normal Chicken</ion-label>
+      <ion-label class=" ion-text-center big-font"
+        >₹ {{orders.withSkinRate}}</ion-label
+      >
     </ion-item>
-
-    <ion-card-content class="ion-text-center">
-      ₹ {{orders.withSkinRate}}
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-item class="ion-text-center">
-      <ion-icon name="cash-outline" class="size"></ion-icon>
-      <ion-label class="title ion-text-center">Skinless chicken</ion-label>
+    <ion-item class="">
+      <ion-label class="title ">Skinless Chicken</ion-label>
+      <ion-label class=" ion-text-center big-font"
+        >₹ {{orders.skinlessRate}}</ion-label
+      >
     </ion-item>
-
-    <ion-card-content class="ion-text-center">
-      ₹ {{orders.skinlessRate}}
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-item>
-      <ion-icon name="time-outline" class="size"></ion-icon>
-      <ion-label class="title ion-text-center">Cut Off Time</ion-label>
+    <ion-item class="">
+      <ion-label class="title ">Cut Off Time</ion-label>
+      <ion-label class=" ion-text-center big-font">{{cutoffTimeToShownToCustomer | date:'h:mm a'}}</ion-label>
     </ion-item>
-
-    <ion-card-content class="ion-text-center">
-      {{orders.cutOffTime}} p.m
-    </ion-card-content>
   </ion-card>
 </div>
 
-<div style="margin: 0.5rem" class="x" [hidden]="userService.isVisibleForCustomers()">
+<div
+  style="margin: 0.5rem"
+  class="x"
+  [hidden]="userService.isVisibleForCustomers()"
+>
   <form [formGroup]="ionicForm" (ngSubmit)="submitForm()" novalidate>
     <ion-item>
       <ion-label position="floating">Wholesale Rate</ion-label>
@@ -87,24 +83,53 @@
     </span> -->
     <ion-row>
       <ion-col>
-        <ion-button type="submit" color="danger" expand="block">Update</ion-button>
+        <ion-button type="submit" color="danger" expand="block"
+          >Update</ion-button
+        >
       </ion-col>
     </ion-row>
   </form>
-  <ion-toolbar class="ion-text-center">
+  <!-- <ion-toolbar class="ion-text-center">
     <ion-title size="large" color="dark">Add Cages For Customers</ion-title>
-  </ion-toolbar>
-  <form [formGroup]="addCagesForCustomer" (ngSubmit)="submitFormaddCages()" novalidate>
+  </ion-toolbar> -->
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-text-center font">
+            Add Cages For Customers
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+
+  
+  <form
+    [formGroup]="addCagesForCustomer"
+    (ngSubmit)="submitFormaddCages()"
+    novalidate
+  >
     <ion-item>
       <ion-label>Select Customer</ion-label>
-      <ionic-selectable item-content formControlName="username" itemValueField="userId" itemTextField="userName"
-        [items]="userNames" [hasVirtualScroll]="true" [canSearch]="true" (onChange)="customerChange($event)">
+      <ionic-selectable
+        item-content
+        formControlName="username"
+        itemValueField="userId"
+        itemTextField="userName"
+        [items]="userNames"
+        [hasVirtualScroll]="true"
+        [canSearch]="true"
+        (onChange)="customerChange($event)"
+      >
       </ionic-selectable>
     </ion-item>
 
     <ion-row>
       <ion-col>
-        <ion-button id="open-modal" expand="block" color="danger">Update Cages</ion-button>
+        <ion-button id="open-modal" expand="block" color="danger" [disabled]="currentSelectedUser==null"
+          >Update Cages</ion-button
+        >
       </ion-col>
     </ion-row>
     <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
@@ -116,15 +141,22 @@
             </ion-buttons>
             <ion-title>Order Cages</ion-title>
             <ion-buttons slot="end">
-              <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+              <ion-button (click)="confirm()" [strong]="true"
+                >Confirm</ion-button
+              >
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
           <ion-item>
             <ion-label position="stacked">Number of Cages</ion-label>
-            <ion-input type="number" placeholder="Cages" [(ngModel)]="noOfCages" clearInput="true"
-              [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-input
+              type="number"
+              placeholder="Cages"
+              [(ngModel)]="noOfCages"
+              clearInput="true"
+              [ngModelOptions]="{standalone: true}"
+            ></ion-input>
           </ion-item>
         </ion-content>
       </ng-template>

@@ -1,14 +1,7 @@
-.bounce{
-    animation: bounce 0.5s;
-  animation-direction: alternate;
-  animation-timing-function: cubic-bezier(.5,0.05,1,.5);
-  animation-iteration-count: infinite;
+ion-icon {
+  font-size: 54px;
+  color: green;
 }
-
-@keyframes bounce {
-    from { transform: translate3d(0, 0, 0);     }
-    to   { transform: translate3d(0, 20px, 0); }
-  }
 
 
 .font{
@@ -17,4 +10,45 @@
   color: black;
   font-weight:bolder;
 }
+ion-input.custom {
+  --background: #e1e1e1;
+  --color: black;
+  --font-weight:bold;
+  --placeholder-color: #ddd;
+  --placeholder-opacity: .8;
 
+  --padding-bottom: 10px;
+  --padding-end: 10px;
+  --padding-start: 10px;
+  --padding-top: 10px;
+}
+.form-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: #fff;
+    background-image: none;
+    border: 0.05rem solid #bcc3ce;
+    border-radius: 0.1rem;
+    color: #3b4351;
+    display: block;
+    font-size: .8rem;
+    height: 1.8rem;
+    line-height: 1.2rem;
+    max-width: 100%;
+    outline: 0;
+    padding: 0.25rem 0.4rem;
+    position: relative;
+    transition: background .2s,border .2s,box-shadow .2s,color .2s;
+    width: 100%;
+} 
+.label{
+   padding: 11px 0px 0px 11px;
+}
+.label1{
+   padding: 5px 0px 0px 0px;
+}
+.pdf-icon{
+  font-size: 30px;
+  color:  #8f2f56;
+}

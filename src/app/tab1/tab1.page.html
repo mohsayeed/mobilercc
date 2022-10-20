@@ -16,4 +16,18 @@
      </ion-toolbar>
   </ion-header>
   <app-rates></app-rates>
+<div [hidden]="!userService.isVisibleForCustomers()">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-text-center font">
+              Daily Orders
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-header>
+    <app-order></app-order>
+</div>
 </ion-content>

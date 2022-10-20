@@ -7,6 +7,9 @@ import { OrdersService } from '../services/orders/orders.service';
 import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/users/user.service';
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-order',
@@ -19,7 +22,8 @@ import { UserService } from '../services/users/user.service';
 
 export class OrderPage implements OnInit {
   @ViewChild('table', { static: true }) table: APIDefinition;
-
+  public tableData: any;
+  head = [['User Name', 'Ordered Cages','Weight','Signature']]
   today = new Date()
   public configuration: Config;
   public data$: Observable<any>;
@@ -32,12 +36,13 @@ export class OrderPage implements OnInit {
     public datePipe: DatePipe,
     private toastr: ToastrService,
     private dailyRatesService: DailyratesService,
-    public userService:UserService
-    ) { }
-  orders: number
+    public userService: UserService
+  ) { }
+  orders: number = 0
   userId: number;
-  totalNoOfCages:any;
-  cutOffTime: string;
+  totalNoOfCages: any;
+  cutOffTime: any;
+  timeTobeShowntoCustomer: any;
   date: any
   ngOnInit() {
     this.configuration = { ...DefaultConfig };
@@ -48,9 +53,9 @@ export class OrderPage implements OnInit {
     if (this.userService.isVisibleForCustomers()) {
       this.getOrdersData()
     }
-    else{
-    this.date = this.datePipe.transform(this.today, 'yyyy-MM-dd')
-    this.getAllUsersDataByDate(this.date);
+    else {
+      this.date = this.datePipe.transform(this.today, 'yyyy-MM-dd')
+      this.getAllUsersDataByDate(this.date);
     }
   }
   getOrdersData(event?: any) {
@@ -72,8 +77,8 @@ export class OrderPage implements OnInit {
           this.submittButtonTxt = 'Update Order'
           this.isDisable()
         }
-        if (event)
-          event.target.complete();
+        // if (event)
+        //   event.target.complete();
       },
         (error) => {
           if (event)
@@ -135,7 +140,7 @@ export class OrderPage implements OnInit {
         let splitted = data.cutOffTime.split(":");
         let givenHour = splitted[0]
         let givenMin = splitted[1]
-
+        this.timeTobeShowntoCustomer = this.toTime(this.cutOffTime)
 
         if (hour < givenHour) {
           this.isDisableButton = false
@@ -166,6 +171,7 @@ export class OrderPage implements OnInit {
   getAllUsersDataByDate(date: any) {
     this.data$ = this.orderService.getOrdersListByDate(this.datePipe.transform(date, 'yyyy-MM-dd'))
     this.totalNoOfCages = this.data$.subscribe((result) => {
+      this.tableData = result
       this.totalNoOfCages = result.map((_) => _.ordeR_CAGES).reduce((acc, cur) => cur + acc, 0);
     })
   }
@@ -176,16 +182,59 @@ export class OrderPage implements OnInit {
     });
   }
 
-  ionRefresher(event?:any){
-    if (this.userService.isVisibleForCustomers()){
+  ionRefresher(event?: any) {
+    if (this.userService.isVisibleForCustomers()) {
       this.getOrdersData()
     }
-    else{
+    else {
       this.date = this.datePipe.transform(this.today, 'yyyy-MM-dd')
       this.getAllUsersDataByDate(this.date);
     }
     if (event)
       event.target.complete();
+  }
+  toTime(timeString) {
+    var timeTokens = timeString.split(':');
+    return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
+  }
+  createPdf() {
+    var resultantData = []
+    for (var i in this.tableData) {
+      var y: number = +i;
+      resultantData.push(this.jsontoArray(this.tableData[y]));
+    }
+    var doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('Order Date : ' + this.datePipe.transform(this.date, 'dd-MMM-yyyy'), 11, 8);
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+
+
+    (doc as any).autoTable({
+      head: this.head,
+      body: resultantData,
+      theme: 'grid',
+      didDrawCell: data => {
+      }
+    })
+
+    // Open PDF document in new tab
+    doc.output('dataurlnewwindow')
+    // Download PDF document  
+    // doc.save('table.pdf');
+  }
+  jsontoArray(JS_Obj) {
+    var res = [];
+
+    for (var i in JS_Obj) {
+      if (i =='useR_ID')
+      continue
+      else
+      res.push(JS_Obj[i]);
+    }
+
+    return res;
   }
 
 }

@@ -33,7 +33,9 @@ export class RatesPage implements OnInit {
     "withSkinRate": 200,
     "cutOffTime": "000"
   }
+  cutoffTimeToShownToCustomer:any;
   today = new Date()
+  date : any;
   currentSelectedUser: any = null;
   userNames: any;
   ngOnInit() {
@@ -76,6 +78,7 @@ export class RatesPage implements OnInit {
       .subscribe(
         (result) => {
           this.orders = result
+          this.cutoffTimeToShownToCustomer = this.toTime(result.cutOffTime)
           this.dailyRatesService._dailyRatesInfo$.next(result)
           this.ionicForm.patchValue({
             wholesaleRate: this.orders.liveRate,
@@ -109,8 +112,8 @@ export class RatesPage implements OnInit {
         "dailyRateId": 0,
         "dailyDate": new Date(),
         "liveRate": this.ionicForm.value.wholesaleRate,
-        "skinlessRate": this.ionicForm.value.normalChicken,
-        "withSkinRate": this.ionicForm.value.skinlessChicken,
+        "withSkinRate": this.ionicForm.value.normalChicken,
+        "skinlessRate": this.ionicForm.value.skinlessChicken,
         "cutOffTime": this.ionicForm.value.cutOffTime,
         "updatedBy": 1,
         "updatedDt": new Date(),
@@ -140,6 +143,7 @@ export class RatesPage implements OnInit {
     }
   }
   customerChange(event?: any) {
+    console.log(event)
     this.currentSelectedUser = (event.value)
   }
   cancel() {
@@ -152,6 +156,12 @@ export class RatesPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    if(ev.detail.role==='cancel'){
+      this.addCagesForCustomer.patchValue({
+        username: null
+      });
+      this.currentSelectedUser=null
+    }
     if (ev.detail.role === 'confirm') {
       let data =
       {
@@ -172,6 +182,7 @@ export class RatesPage implements OnInit {
             this.addCagesForCustomer.patchValue({
               username: null
             });
+            this.currentSelectedUser=null
             this.noOfCages = null
           },
           (error) => {
@@ -189,5 +200,10 @@ export class RatesPage implements OnInit {
     if (event)
       event.target.complete();
   }
+  toTime(timeString) {
+    var timeTokens = timeString.split(':');
+    return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
+  }
+ 
 
 }
