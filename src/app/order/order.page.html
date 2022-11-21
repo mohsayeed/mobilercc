@@ -62,8 +62,8 @@
     <ion-col class="label1" size="1"><ion-icon name="document-text-sharp" class="pdf-icon" (click)="createPdf()"></ion-icon></ion-col>
   </ion-row>
   <ion-row>
-    <ion-col>
-      <ngx-table #table [data]="data$ | async" [configuration]="configuration" [columns]="columns">
+    <ion-col class="print-wrapper" id="print-wrapper">
+      <ngx-table  #table [data]="data$ | async" [configuration]="configuration" [columns]="columns">
       </ngx-table>
     </ion-col>
   </ion-row>

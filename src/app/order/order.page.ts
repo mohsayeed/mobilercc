@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { UserService } from '../services/users/user.service';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
-
+import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
 
 @Component({
   selector: 'app-order',
@@ -31,13 +31,15 @@ export class OrderPage implements OnInit {
   isOrderPresent: any;
   isDisableButton: boolean
   submittButtonTxt: string;
+  html:string= ""
   constructor(private alertController: AlertController,
     private orderService: OrdersService,
     public datePipe: DatePipe,
     private toastr: ToastrService,
     private dailyRatesService: DailyratesService,
-    public userService: UserService
-  ) { }
+    public userService: UserService,
+    private pdfGenerator: PDFGenerator
+  ) {}
   orders: number = 0
   userId: number;
   totalNoOfCages: any;
@@ -220,9 +222,37 @@ export class OrderPage implements OnInit {
     })
 
     // Open PDF document in new tab
-    doc.output('dataurlnewwindow')
+    // this.html = doc.output()
+    // doc.output('dataurlnewwindow')
     // Download PDF document  
-    // doc.save('table.pdf');
+    doc.save('table.pdf');
+    var content = document.getElementById('print-wrapper').innerHTML;
+    let options = {
+      documentSize: 'A4',
+      type: 'share',
+      // landscape: 'portrait',
+      fileName: 'Order-Invoice.pdf'
+    };
+    this.pdfGenerator.fromData(content, options)
+      .then((base64) => {
+        console.log('OK', base64);
+      }).catch((error) => {
+        console.log('error', error);
+      });
+    console.log('hi')
+
+    // const openCapacitorSite = async () => {
+    //   await Browser.open({ url: doc.output('datauristring') , toolbarColor:"#f4dc41" });
+    //   console.log("eit ennded")
+    // };
+    // openCapacitorSite()
+
+    // var options: PDFGeneratorOptions = {
+    //   type: "share"
+    // }
+    // this.html = document.getElementById("table1").innerHTML
+    // console.log(this.html)
+    // this.pdf.fromData(this.html, options)
   }
   jsontoArray(JS_Obj) {
     var res = [];
@@ -236,5 +266,7 @@ export class OrderPage implements OnInit {
 
     return res;
   }
-
+ xcreatepdf(){
+  
+ }
 }

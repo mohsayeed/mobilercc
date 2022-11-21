@@ -19,7 +19,7 @@ import { LoginGuard } from './core/auth/login.guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { UserService } from './services/users/user.service';
-import { NgChartsModule } from 'ng2-charts';
+import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: 'red',
@@ -42,7 +42,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     HttpClientModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     BrowserAnimationsModule,
-    NgChartsModule,
     ToastrModule.forRoot(),
     NgxUiLoaderHttpModule.forRoot({ showForeground: true }),
   ],
@@ -53,6 +52,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AuthGuardGuard,
     LoginGuard,
     UserService,
+    PDFGenerator
   ],
   bootstrap: [AppComponent],
 })

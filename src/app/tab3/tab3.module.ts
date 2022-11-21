@@ -7,7 +7,6 @@ import { Tab3Page } from './tab3.page';
 
 import { Tab3PageRoutingModule } from './tab3-routing.module';
 import { HeaderPageModule } from '../header/header.module';
-import { ReportsPageModule } from '../reports/reports.module';
 
 @NgModule({
   imports: [
@@ -17,7 +16,6 @@ import { ReportsPageModule } from '../reports/reports.module';
     RouterModule.forChild([{ path: '', component: Tab3Page }]),
     Tab3PageRoutingModule,
     HeaderPageModule,
-    ReportsPageModule
   ],
   declarations: [Tab3Page]
 })
