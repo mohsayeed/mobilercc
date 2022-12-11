@@ -1,4 +1,5 @@
-<ion-refresher [hidden]="userService.isVisibleForCustomers()" slot="fixed" (ionRefresh)="ionRefresher($event)" pullMin="100" pullMax="200">
+<ion-refresher [hidden]="userService.isVisibleForCustomers()" slot="fixed" (ionRefresh)="ionRefresher($event)"
+  pullMin="100" pullMax="200">
   <ion-refresher-content pullingIcon="arrow-down-outline" pullingText="Pull to refresh" refreshingSpinner="crescent"
     refreshingText="Refreshing...">
   </ion-refresher-content>
@@ -6,19 +7,19 @@
 <ion-grid [hidden]="!userService.isVisibleForCustomers()">
   <ion-row>
     <ion-col size="6">
-    <ion-item>
-      <ion-label >Number of Cages</ion-label>
-    </ion-item>
+      <ion-item>
+        <ion-label>Number of Cages</ion-label>
+      </ion-item>
     </ion-col>
     <ion-col size="4">
-<ion-input autofocus="true" placeholder="No of Cages"  type="number" [(ngModel)]="orders"
-  [attr.disabled]="isDisableButton?true:null"  class="custom ion-text-center"></ion-input>
+      <ion-input autofocus="true" placeholder="No of Cages" type="number" [(ngModel)]="orders"
+        [attr.disabled]="isDisableButton?true:null" class="custom ion-text-center"></ion-input>
     </ion-col>
     <ion-col size="2">
       <!-- <ion-button (click)="presentAlert()" type="submit"  color="danger" class="ion-text-center"
         [attr.disabled]="isDisableButton?true:null">{{submittButtonTxt}}</ion-button> -->
-        <ion-icon name="checkmark-circle-sharp" (click)="presentAlert()" type="submit"  color="danger" class="ion-text-center"
-        [attr.disabled]="isDisableButton?true:null" style="padding: 0px;"></ion-icon>
+      <ion-icon name="checkmark-circle-sharp" (click)="presentAlert()" type="submit" color="danger"
+        class="ion-text-center" [attr.disabled]="isDisableButton?true:null" style="padding: 0px;"></ion-icon>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -33,17 +34,17 @@
 <ion-grid class="ion-margin" style="padding-bottom: 3rem;" [hidden]="userService.isVisibleForCustomers()">
   <ion-row class="ion-margin">
     <ion-col>
-        <!-- <ion-label>Date</ion-label> -->
-        <!-- <ion-text slot="end">{{ date }}</ion-text> -->
-        <ion-datetime #popoverDatetime presentation="date" presentation="date" preferWheel ="true"
-          [max]="datePipe.transform(this.today, 'yyyy-MM-dd')" [min]="getLastWeeksDate()" displayFormat="DD.MM.YYYY"
-          (ionChange)="date = datePipe.transform((popoverDatetime.value), 'yyyy-MM-dd'); popoverDatetime.confirm(true);getAllUsersDataByDate(date)">
+      <!-- <ion-label>Date</ion-label> -->
+      <!-- <ion-text slot="end">{{ date }}</ion-text> -->
+      <ion-datetime #popoverDatetime presentation="date" presentation="date" preferWheel="true"
+        [max]="datePipe.transform(this.today, 'yyyy-MM-dd')" [min]="getLastWeeksDate()" displayFormat="DD.MM.YYYY"
+        (ionChange)="date = datePipe.transform((popoverDatetime.value), 'yyyy-MM-dd'); popoverDatetime.confirm(true);getAllUsersDataByDate(date)">
         <!-- <ion-popover trigger="open-date-input" show-backdrop="false">
           <ng-template>
             
           </ng-template>
         </ion-popover> -->
-</ion-datetime>
+      </ion-datetime>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -52,19 +53,59 @@
         placeholder="Search" />
     </ion-col>
     <ion-col size="5" class="label">
-      <ion-label >
+      <ion-label>
         Cages: {{totalNoOfCages}}
       </ion-label>
       <!-- <ion-chip  color="dark">
       
       </ion-chip>  -->
     </ion-col>
-    <ion-col class="label1" size="1"><ion-icon name="document-text-sharp" class="pdf-icon" (click)="createPdf()"></ion-icon></ion-col>
+    <ion-col class="label1" size="1">
+      <ion-icon name="document-text-sharp" class="pdf-icon" (click)="createPdf()"></ion-icon>
+    </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col class="print-wrapper" id="print-wrapper">
-      <ngx-table  #table [data]="data$ | async" [configuration]="configuration" [columns]="columns">
+    <ion-col>
+      <ngx-table #table [data]="data$ | async" [configuration]="configuration" [columns]="columns">
       </ngx-table>
     </ion-col>
   </ion-row>
+  <ion-col class="print-wrapper" id="print-wrapper" [hidden]="true">
+    <div style="overflow-x:auto;">
+      <table style="border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+    border: 1px solid black;
+  border-collapse: collapse;">
+        <tr>
+          <th style="  text-align: left;
+  padding: 8px; border: 1px solid black;
+  border-collapse: collapse;">Name</th>
+          <th style="  text-align: left;
+  padding: 8px;">#Cages</th>
+          <th style="  text-align: left;
+  padding: 8px; border: 1px solid black;
+  border-collapse: collapse;">Weight</th>
+          <th style="  text-align: left;
+  padding: 8px; border: 1px solid black;
+  border-collapse: collapse;">Sign</th>
+        </tr>
+        <tr *ngFor="let rec of tableData">
+          <th style="  border: 1px solid black;
+  border-collapse: collapse; text-align: left;
+  padding: 8px;">{{rec.useR_NAME}}</th>
+          <th style="   border: 1px solid black;
+  border-collapse: collapse;text-align: left;
+  padding: 8px;">{{rec.ordeR_CAGES}}</th>
+          <th style="  border: 1px solid black;
+  border-collapse: collapse; text-align: left;
+  padding: 8px;"></th>
+          <th style="  border: 1px solid black;
+  border-collapse: collapse; text-align: left;
+  padding: 8px;"></th>
+        </tr>
+      </table>
+    </div>
+  </ion-col>
 </ion-grid>

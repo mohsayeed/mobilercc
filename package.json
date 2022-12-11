@@ -38,6 +38,7 @@
     "cordova-res": "^0.15.4",
     "crypto-js": "^4.1.1",
     "faker": "^5.5.3",
+    "install": "^0.13.0",
     "ionic-selectable": "^4.9.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",

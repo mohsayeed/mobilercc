@@ -200,32 +200,32 @@ export class OrderPage implements OnInit {
     return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
   }
   createPdf() {
-    var resultantData = []
-    for (var i in this.tableData) {
-      var y: number = +i;
-      resultantData.push(this.jsontoArray(this.tableData[y]));
-    }
-    var doc = new jsPDF();
+    // var resultantData = []
+    // for (var i in this.tableData) {
+    //   var y: number = +i;
+    //   resultantData.push(this.jsontoArray(this.tableData[y]));
+    // }
+    // var doc = new jsPDF();
 
-    doc.setFontSize(18);
-    doc.text('Order Date : ' + this.datePipe.transform(this.date, 'dd-MMM-yyyy'), 11, 8);
-    doc.setFontSize(11);
-    doc.setTextColor(100);
+    // doc.setFontSize(18);
+    // doc.text('Order Date : ' + this.datePipe.transform(this.date, 'dd-MMM-yyyy'), 11, 8);
+    // doc.setFontSize(11);
+    // doc.setTextColor(100);
 
 
-    (doc as any).autoTable({
-      head: this.head,
-      body: resultantData,
-      theme: 'grid',
-      didDrawCell: data => {
-      }
-    })
+    // (doc as any).autoTable({
+    //   head: this.head,
+    //   body: resultantData,
+    //   theme: 'grid',
+    //   didDrawCell: data => {
+    //   }
+    // })
 
-    // Open PDF document in new tab
-    // this.html = doc.output()
-    // doc.output('dataurlnewwindow')
-    // Download PDF document  
-    doc.save('table.pdf');
+    // // Open PDF document in new tab
+    // // this.html = doc.output()
+    // // doc.output('dataurlnewwindow')
+    // // Download PDF document  
+    // doc.save('table.pdf');
     var content = document.getElementById('print-wrapper').innerHTML;
     let options = {
       documentSize: 'A4',
@@ -239,7 +239,6 @@ export class OrderPage implements OnInit {
       }).catch((error) => {
         console.log('error', error);
       });
-    console.log('hi')
 
     // const openCapacitorSite = async () => {
     //   await Browser.open({ url: doc.output('datauristring') , toolbarColor:"#f4dc41" });

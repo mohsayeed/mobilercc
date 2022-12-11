@@ -7,7 +7,8 @@ export const environment = {
   // apiUrl:'https://mrcc.azure-api.net/v1/api/',
   // apiUrl:'https://rccweb.azure-api.net/v1/api/',
   // apiUrl:'https://localhost:7103/api/',
-  apiUrl:'https://ritapi.azure-api.net/v1/api/'
+  // apiUrl:'https://ritapi.azure-api.net/v1/api/'
+  apiUrl:'https://vzr-mobile.azurewebsites.net/api/'
 };
 
 /*
