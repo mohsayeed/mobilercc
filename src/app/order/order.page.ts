@@ -20,6 +20,7 @@ import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
 
 export class OrderPage implements OnInit {
   @ViewChild('table', { static: true }) table: APIDefinition;
+  updateRate : boolean = true
   public tableData: any;
   head = [['User Name', 'Ordered Cages','Weight','Signature']]
   today = new Date()
@@ -40,7 +41,7 @@ export class OrderPage implements OnInit {
     private zone:NgZone   ,
     private cdr: ChangeDetectorRef 
   ) {}
-  orders: number = null
+  orders: number = 0
   userId: number;
   totalNoOfCages: any = 0;
   cutOffTime: any;
@@ -73,6 +74,7 @@ export class OrderPage implements OnInit {
           this.orders = 0
           this.submittButtonTxt = 'Please Order Now !!'
           this.isDisable()
+          this.cdr.detectChanges();
         }
         else {
           this.zone.run(() => {
@@ -191,7 +193,7 @@ export class OrderPage implements OnInit {
   }
 
   ionRefresher(event?: any) {
-    console.log('ionoredre')
+    this.updateRate = !this.updateRate
     if (this.userService.isVisibleForCustomers()) {
       this.getOrdersData()
     }

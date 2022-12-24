@@ -5,6 +5,11 @@
   </ion-header>
 
 <ion-content [fullscreen]="true" [scrollY]="true " [forceOverscroll]="true" color="light">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)" pullMin="150" pullMax="200">
+      <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+        refreshingSpinner="circles" refreshingText="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-grid>

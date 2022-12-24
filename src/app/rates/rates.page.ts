@@ -33,6 +33,7 @@ export class RatesPage implements OnInit {
     "withSkinRate": 200,
     "cutOffTime": "000"
   }
+  updateOrders:boolean = true
   cutoffTimeToShownToCustomer:any;
   today = new Date()
   date : any;
@@ -193,6 +194,7 @@ export class RatesPage implements OnInit {
     }
   }
   ionRefresher(event?: any){
+    this.updateOrders = !this.updateOrders
     this.getDailyRates();
     if (!this.userService.isVisibleForCustomers()) {
       this.getAllUserNamesAndIds()
@@ -205,6 +207,4 @@ export class RatesPage implements OnInit {
     var timeTokens = timeString.split(':');
     return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
   }
- 
-
 }

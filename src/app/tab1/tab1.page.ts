@@ -10,4 +10,11 @@ export class Tab1Page implements OnInit {
   ngOnInit(): void {
   }
 constructor(public userService:UserService){}
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      console.log('hi')
+      event.target.complete();
+    }, 300);
+  };
 }
