@@ -7,13 +7,14 @@ import { UserService } from '../services/users/user.service';
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
+  updateContent:boolean = true
   ngOnInit(): void {
   }
 constructor(public userService:UserService){}
   handleRefresh(event) {
     setTimeout(() => {
       // Any calls to load data go here
-      console.log('hi')
+      this.updateContent = !this.updateContent
       event.target.complete();
     }, 300);
   };

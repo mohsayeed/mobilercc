@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/users/user.service';
 
@@ -8,6 +8,8 @@ import { UserService } from '../services/users/user.service';
   styleUrls: ['./header.page.scss'],
 })
 export class HeaderPage implements OnInit {
+  @Input() update: boolean;
+
   userName = '';
   vendorCode: any;
   constructor(
@@ -23,5 +25,8 @@ export class HeaderPage implements OnInit {
   logout() {
     this.userName = null;
     this.authService.logout();
+  }
+  ngOnChanges() {
+  //  this.ngOnInit()
   }
 }

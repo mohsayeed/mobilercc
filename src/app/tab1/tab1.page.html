@@ -1,6 +1,6 @@
 <ion-header  [translucent]="true">
 <ion-toolbar>
-  <app-header ></app-header>
+  <app-header [update]="updateContent"></app-header>
 </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" [scrollY]="true" [forceOverscroll]="true" color="light">
@@ -22,7 +22,7 @@
       </ion-grid>
      </ion-toolbar>
   </ion-header>
-  <app-rates></app-rates>
+  <app-rates [update]="updateContent"></app-rates>
 <div [hidden]="!userService.isVisibleForCustomers()">
     <ion-header collapse="condense">
       <ion-toolbar>
@@ -35,6 +35,6 @@
         </ion-grid>
       </ion-toolbar>
     </ion-header>
-    <app-order></app-order>
+    <app-order [update]="updateContent"></app-order>
 </div>
 </ion-content>

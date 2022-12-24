@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AlertController, Platform } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { DailyratesService } from '../services/dailyrates.service';
@@ -19,8 +19,8 @@ import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
 
 
 export class OrderPage implements OnInit {
+  @Input() update: boolean;
   @ViewChild('table', { static: true }) table: APIDefinition;
-  updateRate : boolean = true
   public tableData: any;
   head = [['User Name', 'Ordered Cages','Weight','Signature']]
   today = new Date()
@@ -47,6 +47,9 @@ export class OrderPage implements OnInit {
   cutOffTime: any;
   timeTobeShowntoCustomer: any;
   date: any
+  ngOnChanges() {
+    this.ionRefresher()
+  }
   ngOnInit() {
     this.configuration = { ...DefaultConfig };
     this.columns = [
@@ -193,7 +196,6 @@ export class OrderPage implements OnInit {
   }
 
   ionRefresher(event?: any) {
-    this.updateRate = !this.updateRate
     if (this.userService.isVisibleForCustomers()) {
       this.getOrdersData()
     }
@@ -201,8 +203,6 @@ export class OrderPage implements OnInit {
       this.date = this.datePipe.transform(this.today, 'yyyy-MM-dd')
       this.getAllUsersDataByDate(this.date);
     }
-    if (event)
-      event.target.complete();
   }
   toTime(timeString) {
     var timeTokens = timeString.split(':');

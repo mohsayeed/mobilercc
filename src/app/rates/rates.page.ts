@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IonModal } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
@@ -15,9 +15,12 @@ import { DatePipe } from '@angular/common';
   providers: [DatePipe]
 })
 export class RatesPage implements OnInit {
+  @Input() update: boolean;
   @ViewChild(IonModal) modal: IonModal;
   noOfCages: any = null;
-
+  ngOnChanges() {
+    this.ionRefresher()
+  }
 
 
   constructor(private dailyRatesService: DailyratesService,
@@ -33,7 +36,6 @@ export class RatesPage implements OnInit {
     "withSkinRate": 200,
     "cutOffTime": "000"
   }
-  updateOrders:boolean = true
   cutoffTimeToShownToCustomer:any;
   today = new Date()
   date : any;
@@ -194,14 +196,10 @@ export class RatesPage implements OnInit {
     }
   }
   ionRefresher(event?: any){
-    this.updateOrders = !this.updateOrders
     this.getDailyRates();
     if (!this.userService.isVisibleForCustomers()) {
       this.getAllUserNamesAndIds()
     }
-   
-    if (event)
-      event.target.complete();
   }
   toTime(timeString) {
     var timeTokens = timeString.split(':');

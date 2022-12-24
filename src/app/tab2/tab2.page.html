@@ -1,6 +1,6 @@
 <ion-header  [translucent]="true">
   <ion-toolbar>
-    <app-header ></app-header>
+    <app-header [update]="updateContent" ></app-header>
   </ion-toolbar>
   </ion-header>
 
@@ -21,5 +21,5 @@
       </ion-grid>
      </ion-toolbar>
   </ion-header>
-  <app-order></app-order>
+  <app-order [update]="updateContent"></app-order>
 </ion-content>

@@ -8,10 +8,11 @@ import { UserService } from '../services/users/user.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-
+  updateContent: boolean = true
   handleRefresh(event) {
     setTimeout(() => {
       // Any calls to load data go here
+      this.updateContent = !this.updateContent
       event.target.complete();
     }, 300);
   };
