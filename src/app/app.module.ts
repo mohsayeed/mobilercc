@@ -20,6 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { UserService } from './services/users/user.service';
 import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
+import {File} from '@ionic-native/file/ngx'
+import {FileOpener} from '@ionic-native/file-opener/ngx'
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: 'red',
@@ -52,7 +54,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AuthGuardGuard,
     LoginGuard,
     UserService,
-    PDFGenerator
+    PDFGenerator,
+    File,
+    FileOpener
   ],
   bootstrap: [AppComponent],
 })

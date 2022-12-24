@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Platform, AlertController } from '@ionic/angular';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,19 +13,22 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     public alertController: AlertController,
-    private _location: Location
+    private _location: Location,
+    public router:Router
+
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.router.navigateByUrl('splash')
     });
 
 
     this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
       console.log('Back press handler!');
-      if (this._location.isCurrentPathEqualTo('/home')) {
+      if (this._location.isCurrentPathEqualTo('/tabs')) {
 
         // Show Exit Alert!
         console.log('Show Exit Alert!');

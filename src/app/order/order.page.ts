@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { DailyratesService } from '../services/dailyrates.service';
 import { OrdersService } from '../services/orders/orders.service';
@@ -10,6 +10,8 @@ import { UserService } from '../services/users/user.service';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
+import { File } from '@ionic-native/file/ngx'
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @Component({
   selector: 'app-order',
@@ -38,7 +40,10 @@ export class OrderPage implements OnInit {
     private toastr: ToastrService,
     private dailyRatesService: DailyratesService,
     public userService: UserService,
-    private pdfGenerator: PDFGenerator
+    private pdfGenerator: PDFGenerator,
+    private plt : Platform,
+    private file : File,
+    private fileOpener:FileOpener
   ) {}
   orders: number = 0
   userId: number;
@@ -200,31 +205,37 @@ export class OrderPage implements OnInit {
     return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
   }
   createPdf() {
-    // var resultantData = []
-    // for (var i in this.tableData) {
-    //   var y: number = +i;
-    //   resultantData.push(this.jsontoArray(this.tableData[y]));
-    // }
-    // var doc = new jsPDF();
+    var resultantData = []
+    for (var i in this.tableData) {
+      var y: number = +i;
+      resultantData.push(this.jsontoArray(this.tableData[y]));
+    }
+    var doc = new jsPDF();
 
-    // doc.setFontSize(18);
-    // doc.text('Order Date : ' + this.datePipe.transform(this.date, 'dd-MMM-yyyy'), 11, 8);
-    // doc.setFontSize(11);
-    // doc.setTextColor(100);
+    doc.setFontSize(18);
+    doc.text('Order Date : ' + this.datePipe.transform(this.date, 'dd-MMM-yyyy'), 11, 8);
+    doc.setFontSize(11);
+    doc.setTextColor(100);
 
 
-    // (doc as any).autoTable({
-    //   head: this.head,
-    //   body: resultantData,
-    //   theme: 'grid',
-    //   didDrawCell: data => {
-    //   }
+    (doc as any).autoTable({
+      head: this.head,
+      body: resultantData,
+      theme: 'grid',
+      didDrawCell: data => {
+      }
+    })
+    // Open PDF document in new tab
+    // var buffer= doc.output('arraybuffer')
+    // var utf8 = new Uint8Array(buffer);
+    // var binaryArray = utf8.buffer;
+    // var blob = new Blob([binaryArray],{type:'application/pdf'})
+    // this.file.writeFile(this.file.dataDirectory,'listOfCages.pdf',blob,{replace:true}).then(fileEntry=>{
+    //   this.fileOpener.open(this.file.dataDirectory +'listOfCages.pdf','application/pdf')
     // })
-
-    // // Open PDF document in new tab
-    // // this.html = doc.output()
-    // // doc.output('dataurlnewwindow')
-    // // Download PDF document  
+    // console.log(this.plt)
+    // doc.output('dataurlnewwindow')
+    // Download PDF document  
     // doc.save('table.pdf');
     var content = document.getElementById('print-wrapper').innerHTML;
     let options = {
