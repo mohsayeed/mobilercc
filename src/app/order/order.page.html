@@ -70,42 +70,4 @@
       </ngx-table>
     </ion-col>
   </ion-row>
-  <ion-col class="print-wrapper" hidden="true">
-    <div style="overflow-x:auto;" id="print-wrapper">
-      <table  style="border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  border: 1px solid #ddd;
-    border: 1px solid black;
-  border-collapse: collapse;">
-        <tr>
-          <th style="  text-align: left;
-  padding: 8px; border: 1px solid black;
-  border-collapse: collapse;">Name</th>
-          <th style="  text-align: left;
-  padding: 8px;">#Cages</th>
-          <th style="  text-align: left;
-  padding: 8px; border: 1px solid black;
-  border-collapse: collapse;">Weight</th>
-          <th style="  text-align: left;
-  padding: 8px; border: 1px solid black;
-  border-collapse: collapse;">Sign</th>
-        </tr>
-        <tr *ngFor="let rec of tableData">
-          <th style="  border: 1px solid black;
-  border-collapse: collapse; text-align: left;
-  padding: 8px;">{{rec.useR_NAME}}</th>
-          <th style="   border: 1px solid black;
-  border-collapse: collapse;text-align: left;
-  padding: 8px;">{{rec.ordeR_CAGES}}</th>
-          <th style="  border: 1px solid black;
-  border-collapse: collapse; text-align: left;
-  padding: 8px;"></th>
-          <th style="  border: 1px solid black;
-  border-collapse: collapse; text-align: left;
-  padding: 8px;"></th>
-        </tr>
-      </table>
-    </div>
-  </ion-col>
 </ion-grid>

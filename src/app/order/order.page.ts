@@ -7,11 +7,7 @@ import { OrdersService } from '../services/orders/orders.service';
 import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/users/user.service';
-import { jsPDF } from "jspdf";
-import 'jspdf-autotable';
 import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
-import { File } from '@ionic-native/file/ngx'
-import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @Component({
   selector: 'app-order',
@@ -42,12 +38,10 @@ export class OrderPage implements OnInit {
     public userService: UserService,
     private pdfGenerator: PDFGenerator,
     private plt : Platform,
-    private file : File,
-    private fileOpener:FileOpener
   ) {}
   orders: number = 0
   userId: number;
-  totalNoOfCages: any;
+  totalNoOfCages: any = 0;
   cutOffTime: any;
   timeTobeShowntoCustomer: any;
   date: any
@@ -205,44 +199,13 @@ export class OrderPage implements OnInit {
     return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
   }
   createPdf() {
-    var resultantData = []
-    for (var i in this.tableData) {
-      var y: number = +i;
-      resultantData.push(this.jsontoArray(this.tableData[y]));
-    }
-    var doc = new jsPDF();
+    var content = this.dynamicScript()
 
-    doc.setFontSize(18);
-    doc.text('Order Date : ' + this.datePipe.transform(this.date, 'dd-MMM-yyyy'), 11, 8);
-    doc.setFontSize(11);
-    doc.setTextColor(100);
-
-
-    (doc as any).autoTable({
-      head: this.head,
-      body: resultantData,
-      theme: 'grid',
-      didDrawCell: data => {
-      }
-    })
-    // Open PDF document in new tab
-    // var buffer= doc.output('arraybuffer')
-    // var utf8 = new Uint8Array(buffer);
-    // var binaryArray = utf8.buffer;
-    // var blob = new Blob([binaryArray],{type:'application/pdf'})
-    // this.file.writeFile(this.file.dataDirectory,'listOfCages.pdf',blob,{replace:true}).then(fileEntry=>{
-    //   this.fileOpener.open(this.file.dataDirectory +'listOfCages.pdf','application/pdf')
-    // })
-    // console.log(this.plt)
-    // doc.output('dataurlnewwindow')
-    // Download PDF document  
-    // doc.save('table.pdf');
-    var content = document.getElementById('print-wrapper').innerHTML;
+    // console.log(content)
     let options = {
       documentSize: 'A4',
       type: 'share',
-      // landscape: 'portrait',
-      fileName: 'Order-Invoice.pdf'
+      fileName: 'Details-Cages.pdf'
     };
     this.pdfGenerator.fromData(content, options)
       .then((base64) => {
@@ -250,19 +213,6 @@ export class OrderPage implements OnInit {
       }).catch((error) => {
         console.log('error', error);
       });
-
-    // const openCapacitorSite = async () => {
-    //   await Browser.open({ url: doc.output('datauristring') , toolbarColor:"#f4dc41" });
-    //   console.log("eit ennded")
-    // };
-    // openCapacitorSite()
-
-    // var options: PDFGeneratorOptions = {
-    //   type: "share"
-    // }
-    // this.html = document.getElementById("table1").innerHTML
-    // console.log(this.html)
-    // this.pdf.fromData(this.html, options)
   }
   jsontoArray(JS_Obj) {
     var res = [];
@@ -276,7 +226,46 @@ export class OrderPage implements OnInit {
 
     return res;
   }
- xcreatepdf(){
-  
+ dynamicScript(){
+   var strVar = "";
+   strVar += "  <div style=\"overflow-x:auto;\" id=\"print-wrapper\">";
+   strVar += "      <table  style=\"border-collapse: collapse;";
+   strVar += "  border-spacing: 0;";
+   strVar += "  width: 100%;";
+   strVar += "  border: 1px solid #ddd;";
+   strVar += "    border: 1px solid black;";
+   strVar += "  border-collapse: collapse;\">";
+   strVar += "        <tr>";
+   strVar += "          <th style=\"  text-align: left;";
+   strVar += "  padding: 8px; border: 1px solid black;";
+   strVar += "  border-collapse: collapse;\">Name<\/th>";
+   strVar += "          <th style=\"  text-align: left;";
+   strVar += "  padding: 8px;\">#Cages<\/th>";
+   strVar += "          <th style=\"  text-align: left;";
+   strVar += "  padding: 8px; border: 1px solid black;";
+   strVar += "  border-collapse: collapse;\">Weight<\/th>";
+   strVar += "          <th style=\"  text-align: left;";
+   strVar += "  padding: 8px; border: 1px solid black;";
+   strVar += "  border-collapse: collapse;\">Sign<\/th>";
+   strVar += "        <\/tr>";
+   for (let rec of  this.tableData){
+    strVar+="<tr>"
+     strVar += "          <th style=\"  border: 1px solid black;";
+     strVar += "  border-collapse: collapse; text-align: left;";
+     strVar += "  padding: 8px;\">"+rec.useR_NAME+"<\/th>";
+     strVar += "          <th style=\"   border: 1px solid black;";
+     strVar += "  border-collapse: collapse;text-align: left;";
+     strVar += "  padding: 8px;\">"+rec.ordeR_CAGES+"<\/th>";
+     strVar += "          <th style=\"  border: 1px solid black;";
+     strVar += "  border-collapse: collapse; text-align: left;";
+     strVar += "  padding: 8px;\"><\/th>";
+     strVar += "          <th style=\"  border: 1px solid black;";
+     strVar += "  border-collapse: collapse; text-align: left;";
+     strVar += "  padding: 8px;\"><\/th>";
+     strVar += "        <\/tr>";   
+    }
+   strVar += "      <\/table>";
+   strVar += "    <\/div>";
+return strVar
  }
 }

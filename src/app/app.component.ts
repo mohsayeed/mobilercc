@@ -28,7 +28,7 @@ export class AppComponent {
 
     this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
       console.log('Back press handler!');
-      if (this._location.isCurrentPathEqualTo('/tabs')) {
+      if (this._location.isCurrentPathEqualTo('/tabs/tab1')) {
 
         // Show Exit Alert!
         console.log('Show Exit Alert!');
