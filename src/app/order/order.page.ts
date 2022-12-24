@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AlertController, Platform } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { DailyratesService } from '../services/dailyrates.service';
@@ -37,9 +37,10 @@ export class OrderPage implements OnInit {
     private dailyRatesService: DailyratesService,
     public userService: UserService,
     private pdfGenerator: PDFGenerator,
-    private plt : Platform,
+    private zone:NgZone   ,
+    private cdr: ChangeDetectorRef 
   ) {}
-  orders: number = 0
+  orders: number = null
   userId: number;
   totalNoOfCages: any = 0;
   cutOffTime: any;
@@ -74,9 +75,15 @@ export class OrderPage implements OnInit {
           this.isDisable()
         }
         else {
-          this.orders = result.order.orderCages
-          this.submittButtonTxt = 'Update Order'
-          this.isDisable()
+          this.zone.run(() => {
+            setTimeout(() => {
+              this.orders = result.order.orderCages
+              this.submittButtonTxt = 'Update Order'
+              this.isDisable()
+              this.cdr.detectChanges();
+            }, 0)
+          });
+         
         }
         // if (event)
         //   event.target.complete();
@@ -184,6 +191,7 @@ export class OrderPage implements OnInit {
   }
 
   ionRefresher(event?: any) {
+    console.log('ionoredre')
     if (this.userService.isVisibleForCustomers()) {
       this.getOrdersData()
     }
