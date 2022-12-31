@@ -75,7 +75,6 @@ export class RatesPage implements OnInit {
   }
 
   getDailyRates(event?: any) {
-    console.log('daily rates is called')
     this.dailyRatesService
       .getLatestRates()
       .pipe()

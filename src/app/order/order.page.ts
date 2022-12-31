@@ -43,7 +43,7 @@ export class OrderPage implements OnInit {
   ) {}
   orders: number = 0
   userId: number;
-  totalNoOfCages: any = 0;
+  totalNoOfCages: number = 0;
   cutOffTime: any;
   timeTobeShowntoCustomer: any;
   date: any
@@ -183,7 +183,7 @@ export class OrderPage implements OnInit {
 
   getAllUsersDataByDate(date: any) {
     this.data$ = this.orderService.getOrdersListByDate(this.datePipe.transform(date, 'yyyy-MM-dd'))
-    this.totalNoOfCages = this.data$.subscribe((result) => {
+    this.data$.subscribe((result) => {
       this.tableData = result
       this.totalNoOfCages = result.map((_) => _.ordeR_CAGES).reduce((acc, cur) => cur + acc, 0);
     })
@@ -211,7 +211,6 @@ export class OrderPage implements OnInit {
   createPdf() {
     var content = this.dynamicScript()
 
-    // console.log(content)
     let options = {
       documentSize: 'A4',
       type: 'share',
