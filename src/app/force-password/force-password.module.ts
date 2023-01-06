@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { ForcePasswordPageRoutingModule } from './force-password-routing.module';
 import { ForcePasswordPage } from './force-password.page';
-import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   imports: [

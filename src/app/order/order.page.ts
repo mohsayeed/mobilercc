@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { DailyratesService } from '../services/dailyrates.service';
 import { OrdersService } from '../services/orders/orders.service';

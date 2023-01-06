@@ -34,7 +34,11 @@ export class AppComponent {
         console.log('Show Exit Alert!');
         this.showExitConfirm();
         processNextHandler();
-      } else {
+      } 
+      else if(this._location.isCurrentPathEqualTo('/force-password')){
+        console.log('force password is called')
+      }
+      else {
 
         // Navigate to back page
         console.log('Navigate to back page');

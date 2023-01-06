@@ -21,6 +21,17 @@ export class LoginGuard implements CanActivate {
 
 
   loggedIn(){
+    var isTokenpresent = !!localStorage.getItem('loginUser');
+    if(isTokenpresent){
+      var jsonToken = JSON.parse(localStorage.getItem('loginUser'))
+      var password_reset = jsonToken['passwordReset']
+      if(password_reset)
+      return false;
+      else
+      return true
+    }
+    else{
     return !!localStorage.getItem('loginUser');
+  }
   }
 }
